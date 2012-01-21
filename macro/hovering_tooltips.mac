@@ -1,0 +1,156 @@
+/*シンボルのコメントを表示する。
+
+用意するもの
+	Exuberant Ctags
+	（本家）
+	http://hp.vector.co.jp/authors/VA025040/ctags/
+	（日本語版）
+	http://ctags.sourceforge.net/
+
+	※手風琴氏作のCTagsJump009.lzhが導入済みなら、Exuberant Ctagsは導入済みです。
+
+*/
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//		ユーザーカスタマイズ
+////////////////////////////////////////////////////////////////////////////////
+
+//
+$g_ctag_search_filename = "ctags_search.exe";
+$g_ctag_search_abs_path = "C:\\Users\\hoge\\Documents\\github\\hidemaru_hovering_tooltips\\src\\Release\\" + $g_ctag_search_filename;
+
+$g_dengaku_filename = "DengakuDLL.dll";
+$g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
+
+//テスト用。
+//本番はiniファイルから取得する
+$g_tag_filename = "C:\\Users\\hoge\\Documents\\llvm-3.0.src\\tags";
+
+
+////////////////////////////////////////////////////////////////////////////////
+//		メイン処理
+////////////////////////////////////////////////////////////////////////////////
+
+//DengakuDLLをロードしたかどうか
+#g_load_dengaku = false;
+
+call Main;
+endmacro;
+
+
+Main:
+	call CheckEnvironment;
+	if(! ##return){
+		return false;
+	}
+
+	call LoadDengakuDLL;
+	if(! ##return){
+		return false;
+	}
+	
+	##old_column=column;
+	##old_lineno=lineno;
+	##cursor_restore = false;
+	if(rectselecting){
+		//pass
+	}else if(selecting){
+		//pass
+	}else{
+		##cursor_restore=true;
+		selectword;
+	}
+	$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno,1);
+	if(##cursor_restore){
+		escape;
+		movetolineno ##old_column+1, ##old_lineno;
+	}
+	if(0==strlen($$text)){
+		return false;
+	}
+	call GetTooltipString $$text;
+	$$tags_text = $$return;
+	
+	gofileend;
+	insert "\n"+$$tags_text;
+	
+	return true;
+	
+	
+GetTooltipString:
+	##old_hidemaru = hidemaruhandle(0);
+	openfile "/h ";
+	##new_hidemaru = hidemaruhandle(0);
+	
+	$$text=$$1;
+	$$exe = "\"" + $g_ctag_search_abs_path + "\"";
+	$$tag = "\"" + $g_tag_filename + "\"";
+	$$cmd = $$exe + " " + $$text + " " + $$tag;
+	runex $$cmd
+			, 1 			//sync	  0:async 1:sync
+			, 0, "" 		//stdin   0:none 1:auto 2:file 3:(reserve) 4:all 5:select
+			, 1, "" 		//stdout  0:none 1:auto 2:file 3:add file  4:new 5:insert 6:replace
+			, 0, "" 		//stderr  0:none 1:=out 2:file 3:add file  4:new 5:insert 6:replace
+			, 0, "" 		//folder  0:none 1:current 2:specify 3:(reserve) 4:exe's folder
+			, 2 			//show	  0:auto 1:show 2:hide
+			, 1 			//nodraw  0:draw 1:no draw
+			, 0 			//unicode 0:ansi 2:unicode
+			;
+	##ret 	= result;
+	##retex = getresultex(9);
+	selectall;
+	$$result_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno,1);
+	
+	setactivehidemaru 	##old_hidemaru;
+	closehidemaruforced ##new_hidemaru;
+	
+	if(! ##ret){
+		//runexの失敗
+		return "";
+	}
+	if(0 != ##retex){
+		//exeの失敗
+		return "";
+	}
+	
+	return $$result_text;
+	
+	
+LoadDengakuDLL:
+	if(! #g_load_dengaku){
+		loaddll $g_dengaku_abs_path;
+		if (!result) {
+			message $g_dengaku_filename + " をロードできませんでした。";
+			return false;
+		}
+		//	ＤＬＬのバージョンチェック
+		$$DLLVer = dllfuncstr("GETVERSION");
+		if (val(leftstr($$DLLVer, 1)) < 2) {
+			message "このマクロの実行には Ver.2.00 以降の田楽ＤＬＬが必要です。";
+			freedll;
+			return false;
+		}
+
+		#g_load_dengaku=true;
+	}
+	return true;
+
+FreeDengakuDLL:
+	if(#g_load_dengaku){
+		freedll;
+		#g_load_dengaku=false;
+	}
+	return;
+
+//環境の検査
+CheckEnvironment:
+	if(! existfile($g_ctag_search_abs_path)){
+		message("実行ファイルが見つかりません。\n" 			+
+				"マクロを再インストールして下さい。\n" 	+
+				$g_ctag_search_filename);
+		return false;
+	}
+
+	return true;
