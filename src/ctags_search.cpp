@@ -64,10 +64,15 @@ static char * strcasestr (char *haystack, char *needle){
 
 static void usage(){
 	printf(
+	"Usage: ctags_search PATTERN FILE\n"
+	"Search PATTERN in the FILE.\n"
+	"Example: ctags_search MyClassName c:\\project\\tags\n"
+	);
+	/*printf(
 	"Usage: ctags_search MAX PATTERN FILE\n"
 	"Search by up to MAX PATTERN in the FILE.\n"
 	"Example: ctags_search MyClassName c:\\project\\tags\n"
-	);
+	);*/
 }
 
 static char* read_file(FILE*fp){
