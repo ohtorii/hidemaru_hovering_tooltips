@@ -29,6 +29,9 @@ $g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
 $g_tag_filename = "C:\\Users\\hoge\\Documents\\llvm-3.0.src\\tags";
 
 
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //		メイン処理
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +39,28 @@ $g_tag_filename = "C:\\Users\\hoge\\Documents\\llvm-3.0.src\\tags";
 //DengakuDLLをロードしたかどうか
 #g_load_dengaku = false;
 
+
+//ParseCtagsLine関数の返値。
+$g_ParseCtagsLineResult_Filename	= "";	//ファイル名
+$g_ParseCtagsLineResult_Regex		= "";	//正規表現
+
+/*ctagsファイルをパースした結果を格納する配列。
+$Regexs[0...#g_NumTags]
+$Filenames[0...#g_NumTags]
+*/
+$g_Regexs		= "";
+$g_Filenames	= "";
+#g_NumTags		= 0;
+
+/*コメント
+$Comments[0...N]
+*/
+$g_Comments	= "";	//定義位置の前後にあるコメントを格納した配列
+#g_NumComments=0;
+
+disablehistory;
 call Main;
+call FreeDengakuDLL;
 endmacro;
 
 
@@ -46,11 +70,6 @@ Main:
 		return false;
 	}
 
-	call LoadDengakuDLL;
-	if(! ##return){
-		return false;
-	}
-	
 	##old_column=column;
 	##old_lineno=lineno;
 	##cursor_restore = false;
@@ -62,7 +81,7 @@ Main:
 		##cursor_restore=true;
 		selectword;
 	}
-	$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno,1);
+	$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
 	if(##cursor_restore){
 		escape;
 		movetolineno ##old_column+1, ##old_lineno;
@@ -70,23 +89,21 @@ Main:
 	if(0==strlen($$text)){
 		return false;
 	}
-	call GetTooltipString $$text;
-	$$tags_text = $$return;
-	
-	gofileend;
-	insert "\n"+$$tags_text;
-	
+	call GetTooltipString $g_tag_filename, $$text;
+	//$$tags_text = $$return;
+
+	//gofileend;
+	//insert "\n"+$$tags_text;
+
 	return true;
-	
-	
-GetTooltipString:
-	##old_hidemaru = hidemaruhandle(0);
-	openfile "/h ";
-	##new_hidemaru = hidemaruhandle(0);
-	
-	$$text=$$1;
+
+
+//ctags_search.exe を起動してctagsのシンボルを取得する。
+RunCtagsSearch:
+	$$tags_abs_filename=$$1;
+	$$text= $$2;
 	$$exe = "\"" + $g_ctag_search_abs_path + "\"";
-	$$tag = "\"" + $g_tag_filename + "\"";
+	$$tag = "\"" + $$tags_abs_filename + "\"";
 	$$cmd = $$exe + " " + $$text + " " + $$tag;
 	runex $$cmd
 			, 1 			//sync	  0:async 1:sync
@@ -99,25 +116,304 @@ GetTooltipString:
 			, 0 			//unicode 0:ansi 2:unicode
 			;
 	##ret 	= result;
+	if(! ##ret){
+		message("runexで失敗");
+		return false;
+	}
 	##retex = getresultex(9);
-	selectall;
-	$$result_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno,1);
+	if(0 != ##retex){
+		message($g_ctag_search_filename + "  のコマンドラインへの返値が失敗でした。\n");
+		return false;
+	}
+	return true;
+
+
+ParseCtagsLine:
+	$$text = $$1;
+	$$sep  = "\t";
+
+	$g_ParseCtagsLineResult_Filename	= "";
+	$g_ParseCtagsLineResult_Regex		= "";
+
+	//シンボル名
+	$token = dllfuncstr("GETTOKEN",$$text,$$sep);
+	if (dllfunc("HASMORETOKENS") == 0) {
+		return false;
+	}
+
+	//ファイル名
+	$g_ParseCtagsLineResult_Filename = dllfuncstr("GETTOKEN","",$$sep);
+	if (dllfunc("HASMORETOKENS") == 0) {
+		return false;
+	}
+
+	//正規表現
+	$g_ParseCtagsLineResult_Regex = dllfuncstr("GETTOKEN","",$$sep);
+	if (dllfunc("HASMORETOKENS") == 0) {
+		return false;
+	}
+	return true;
+
+
+/*Perlの正規表現を秀丸の正規表現へ変換
+
+（メモ）
+高尚なことはしていません、正規表現文字列の前後を削っているだけです。
+
+（例）
+入力
+	/^  struct SystemZRRIAddressMode {$/;"
+
+出力
+	  struct SystemZRRIAddressMode {
+
+*/
+PerlRegToHidemaruReg:
+	$$text = $$1;
+	##len = strlen($$text);
+
+	//先頭の /^ を削除。
+	$$str_head = "/^";
+	##str_head_len = 2;
+	if($$str_head == leftstr($$text,##str_head_len)){
+		$$text = midstr($$text,##str_head_len, ##len - ##str_head_len);
+		##len = ##len - ##str_head_len;
+	}
+
+	//末尾の $/;" を削除。
+	$$str_tail = "$/;\"";
+	##str_tail_len = 4;
+	if($$str_tail == rightstr($$text,##str_tail_len)){
+		$$text = midstr($$text,0,##len - ##str_tail_len);
+	}
+
+	return $$text;
+
+
+ParseAllLine:
+	##count 	= 0;
+	##max_loop = 10;//最大ループ回数（無限ループ防止）
+	##down_ret = true;
+//$$aaa="";
+	//一行ずつパースする
+	while((##count<##max_loop) && ##down_ret){
+		if(0==linelen2){
+			break;
+		}
+
+		selectline;
+		$$textline = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+		call ParseCtagsLine $$textline;
+		if(! ##return){
+			return false;
+		}
+		call PerlRegToHidemaruReg $g_ParseCtagsLineResult_Regex;
+		//tagsファイルから抜き出した情報を保存しておく
+		$g_Regexs[#g_NumTags]		= $$return;
+		//$$aaa=$$aaa+ $$return + "\n";
+		$g_Filenames[#g_NumTags]	= $g_ParseCtagsLineResult_Filename;
+		#g_NumTags = #g_NumTags + 1;
+
+		##count=##count+1;
+		down;
+		##down_ret=result;
+	}
+	//insert $$aaa;
+	//endmacro;
+	return true;
+
+
+//前後のコメントを抜き出す
+ExtractCommentSingle:
+	selectline;
+	$$func_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+
+	//先頭方向の空白(\t\n )を読み飛ばす
+	golinetop2;
+	searchup "[^ \\t\\n]",regular ;
+
+	##old_column=column;
+	##old_lineno=lineno;
+	golinetop;
+	##cur_lineno = lineno;
+
+	//先頭に向かって探す
+	##max_loop	= 10;
+	##cnt 		= 0;
+	##ret = true;
+	while((##cnt < ##max_loop) && ##ret){
+		if(0x00000003 != (0x00000003 & colorcode)){
+			//コメント以外が現れた
+			break;
+		}
+		//コメント行である
+		##cur_lineno = lineno;
+		##cnt = ##cnt + 1;
+		up;
+		##ret=result;
+	}
+
+	if(##cur_lineno == ##old_lineno){
+		//前方にはコメントが無かった。
+		//後方に向かって探す
+	}
+
+	call SelectRange ##old_column, ##old_lineno, 1, ##cur_lineno;
+	$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+	return $$text + "\x0d\x0a" + $$func_text;
+
+
+OpenFile:
+	$$filename = $$1;
+	if(existfile($$filename)){
+		readonlyopenfile $$filename;
+		return result;
+	}
+	return false;
+
+
+ExtractCommentAll:
+	$$dir_name = $$1;
+	if(#g_NumTags){
+		##cnt = 0;
+
+		$$prev_abs_filename = "";
+		while(##cnt < #g_NumTags){
+			$$abs_filename = $$dir_name + $g_Filenames[##cnt];
+			if($$prev_abs_filename != $$abs_filename){
+				call OpenFile $$abs_filename;
+				##ret = ##return;
+			}else{
+				##ret = true;
+			}
+
+			if(##ret){
+				//message("@@");
+				gofiletop;
+				searchdown2 $g_Regexs[##cnt], casesense, noregular, nohilight;
+				if(result){
+					call ExtractCommentSingle;
+					$g_Comments[#g_NumComments] = $$return;
+					//message($g_Comments[#g_NumComments]);
+					#g_NumComments = #g_NumComments + 1;
+				}
+				$$prev_abs_filename = $$abs_filename;
+			}
+
+			##cnt = ##cnt + 1;
+		}
+	}
+	return true;
+
+
+//ディレクトリ名を取得する
+GetDirName:
+	$$filename = $$1;
+	##n1 = strrstr($$filename,"\\");
+	##n2 = strrstr($$filename,"/");
+	if(##n1 < ##n2){
+		##pos=##n2;
+	}else{
+		##pos=##n1;
+	}
+	if(-1 == ##pos){
+		return $$filename;
+	}
+	//+1して区切り(\/)を込める
+	return leftstr($$filename,##pos+1);
+
+OutputComment:
+	call OpenOutput;
+	call ClearOutput;
 	
+	##hdl = hidemaruhandle(0);
+	##cnt = 0;
+	$$text = "";
+	while(##cnt < #g_NumComments){
+		$$text = $$text + "========================================================================\x0d\x0a" +
+				$g_Comments[##cnt] + "\x0d\x0a";
+		##cnt = ##cnt + 1;
+	}
+	##ret=dllfunc("Output",##hdl,$$text);
+	return ;
+
+
+GetTooltipString:
+	$$tags_abs_filename	= $$1;
+	$$text 				= $$2;
+
+	##old_hidemaru = hidemaruhandle(0);
+	openfile "/h ";
+	##new_hidemaru = hidemaruhandle(0);
+
+	call RunCtagsSearch $$tags_abs_filename, $$text;
+	if(! ##return){
+		return false;
+	}
+
+	//
+	//現時点でこのようなテキストが得られている。
+	//
+	//Syntax	.\lib\MC\MCDisassembler\EDDisassembler.h	/^    AssemblySyntax Syntax;$/;"	m	struct:llvm::EDDisassembler::CPUKey
+	//SyntaxCheckTest	.\utils\lit\lit\LitFormats.py	/^from TestFormats import SyntaxCheckTest, OneCommandPerFileTest$/;"	i
+	//
+
+	//ctagsの１行をパースするためにdengaku-dllを使用します。
+	call LoadDengakuDLL;
+	if(! ##return){
+		return false;
+	}
+
+	gofiletop;
+	call ParseAllLine;
+	if(! ##return){
+		return false;
+	}
+
+	call GetDirName $$tags_abs_filename;
+	$$dir_name = $$return;
+
+	call ExtractCommentAll $$dir_name;
+	if(! ##return){
+		return false;
+	}
+
+	call OutputComment;
+
 	setactivehidemaru 	##old_hidemaru;
 	closehidemaruforced ##new_hidemaru;
-	
-	if(! ##ret){
-		//runexの失敗
-		return "";
-	}
-	if(0 != ##retex){
-		//exeの失敗
-		return "";
-	}
-	
-	return $$result_text;
-	
-	
+	return true;
+
+
+SelectRange:
+	escape;
+	movetolineno 1+##1, ##2;
+	beginsel;
+	movetolineno 1+##3, ##4;
+	endsel;
+	return ;
+
+
+OpenOutput:
+	//アウトプット枠を開く
+	loaddll "HmOutputPane.dll";
+	#h=dllfunc("GetWindowHandle",hidemaruhandle(0));
+	#ret=sendmessage(#h,0x111/*WM_COMMAND*/,1103 ,0);
+	#ret=dllfunc("Push",hidemaruhandle(0));
+	#ret=dllfunc("Pop",hidemaruhandle(0));
+	return ;
+
+
+ClearOutput:
+	loaddll "HmOutputPane.dll";
+	//アウトプット枠を開く
+	#ret=dllfunc("Output",hidemaruhandle(0),"");
+	//アウトプット枠をクリア
+	#h=dllfunc("GetWindowHandle",hidemaruhandle(0));
+	#ret=sendmessage(#h,0x111/*WM_COMMAND*/,1009,0);
+	return ;
+
+
 LoadDengakuDLL:
 	if(! #g_load_dengaku){
 		loaddll $g_dengaku_abs_path;
