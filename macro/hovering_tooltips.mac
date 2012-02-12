@@ -1,6 +1,6 @@
 /*シンボルのコメントを表示する。
 
-用意するもの
+■用意するもの
 	Exuberant Ctags
 	（本家）
 	http://hp.vector.co.jp/authors/VA025040/ctags/
@@ -9,6 +9,19 @@
 
 	※手風琴氏作のCTagsJump009.lzhが導入済みなら、Exuberant Ctagsは導入済みです。
 
+
+■前準備
+	テキスト中の「コメント・文字列」は秀丸エディタから取得しています。
+	秀丸エディタの設定をきちんと行っておいてください。
+
+	以下手順、
+	＊メニュー → その他 → ファイルタイプ別の設定 → 複数行コメント
+		言語毎に設定してください。（多分、ここは皆さん大丈夫だと思います）
+
+	＊メニュー → その他 → ファイルタイプ別の設定 → 強調表示
+		「コメント・文字列」を独自に定義している場合は削除して、秀丸エディタ側に任せるようにしてください。
+
+	（導入の敷居はちょっとだけ高いです、スイマセン）
 */
 
 
@@ -24,9 +37,25 @@ $g_ctag_search_abs_path = "C:\\Users\\hoge\\Documents\\github\\hidemaru_hovering
 $g_dengaku_filename = "DengakuDLL.dll";
 $g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
 
+$g_ini_filename 	= "hovering_tooltips_config.ini";
+$g_ini_abs_path 	= currentmacrodirectory + "\\" + $g_ini_filename;
+
+
 //テスト用。
 //本番はiniファイルから取得する
-$g_tag_filename = "C:\\Users\\hoge\\Documents\\llvm-3.0.src\\tags";
+//$g_tag_filename = "C:\\Users\\hoge\\Documents\\llvm-3.0.src\\tags";
+
+//iniファイル：Pathの最大値
+#g_ini_path_max = 10;
+
+//iniファイル：Priority[0-3]
+#g_ini_priority_max=3;
+//iniファイル：Priorityへ指定する文字列（小文字で指定すること）
+//memo:もし、増減するようなことがあればMainPost関数内の処理も変更すること。
+$g_ini_priority_string[0]	= "current";
+$g_ini_priority_string[1]	= "path";
+$g_ini_priority_string[2]	= "upperdir";
+#g_ini_priority_string_num	= 3;
 
 
 
@@ -55,21 +84,144 @@ $g_Filenames	= "";
 /*コメント
 $Comments[0...N]
 */
-$g_Comments	= "";	//定義位置の前後にあるコメントを格納した配列
+$g_Comments = "";	//定義位置の前後にあるコメントを格納した配列
 #g_NumComments=0;
 
-disablehistory;
+/*	(.ini)ファイルの情報
+*/
+$g_ini_tags			= "tags";
+
+$g_ini_path			= "";
+#g_ini_path_num		= 0;
+
+$g_ini_priority		= "";
+#g_ini_priority_num	= 0;
+
 call Main;
-call FreeDengakuDLL;
 endmacro;
 
 
 Main:
+	disabledraw;
+	disablehistory;
+	disablebreak;
+	disableinvert;
+	$$old_searchbuffer = searchbuffer;
+	##old_searchoption = searchoption;
+
+	call MainPost;
+	##ret =  ##return;
+
+	setsearch $$old_searchbuffer, ##old_searchoption;
+	call FreeDengakuDLL;
+	return ##ret;
+
+
+MainPost:
 	call CheckEnvironment;
 	if(! ##return){
 		return false;
 	}
 
+	call GetSearchText;
+	$$text = $$return;
+	if("" == $$text){
+		return false;
+	}
+
+	call ParseIni;
+	##ret =  ##return;
+	if(! ##ret){
+		return false;
+	}
+
+	##ret=false;
+	##i=0;
+	while((##i < #g_ini_priority_num) && (! ##ret)){
+		$$tags_abs_filename = "";
+		$$priority = tolower($g_ini_priority[##i]);
+		if("current"==$$priority){
+			call MainPostDoCurrent $$text;
+			##ret =  ##return;
+		}else if("path"==$$priority){
+			call MainPostDoPath $$text;
+			##ret =  ##return;
+		}else if("upperdir"==$$priority){
+			call MainPostDoUpperDir $$text;
+			##ret =  ##return;
+		}else{
+			//pass
+		}
+		
+		##i = ##i + 1;
+	}
+	return ##ret;
+	
+
+MainPostDoCurrent:
+	$$text = $$1;
+	$$tags_abs_filename = directory+"\\"+$g_ini_tags;
+	if(existfile($$tags_abs_filename, 1)){
+		call GetTooltipString $$tags_abs_filename, $$text;
+		##ret =  ##return;
+		if(##ret){
+			//コメントを抜き出した
+			return true;
+		}
+	}	
+	return false;
+	
+	
+MainPostDoPath:
+	$$text 	= $$1;
+	##i		= 0;
+	while(##i < #g_ini_path_num){
+		$$tags_abs_filename = $g_ini_path[##i]+"\\"+$g_ini_tags;
+		if(existfile($$tags_abs_filename, 1)){
+			call GetTooltipString $$tags_abs_filename, $$text;
+			##ret =  ##return;
+			if(##ret){
+				//コメントを抜き出した
+				return true;
+			}
+		}	
+		##i = ##i + 1;
+	}
+	return false;
+	
+	
+MainPostDoUpperDir:
+	$$text 	= $$1;
+	##obj=createobject("Scripting.FileSystemObject");
+	if(0==##obj){
+		message("createobject(\"Scripting.FileSystemObject\"); に失敗");
+		return false;
+	}
+	##i=0;
+	##max=100;//無限ループ防止
+	$$current = directory;
+	while(##i<##max){
+		$$current = callmethod_returnstr(##obj,"GetParentFolderName", $$current);
+		if(0==strlen($$current)){
+			break;
+		}
+		$$tags_abs_filename = $$current+"\\"+$g_ini_tags;
+		if(existfile($$tags_abs_filename, 1)){
+			call GetTooltipString $$tags_abs_filename, $$text;
+			##ret =  ##return;
+			if(##ret){
+				//コメントを抜き出した
+				releaseobject ##obj;
+				return true;
+			}
+		}
+		##i = ##i + 1;
+	}
+	releaseobject ##obj;
+	return false;
+	
+	
+GetSearchText:
 	##old_column=column;
 	##old_lineno=lineno;
 	##cursor_restore = false;
@@ -86,17 +238,7 @@ Main:
 		escape;
 		movetolineno ##old_column+1, ##old_lineno;
 	}
-	if(0==strlen($$text)){
-		return false;
-	}
-	call GetTooltipString $g_tag_filename, $$text;
-	//$$tags_text = $$return;
-
-	//gofileend;
-	//insert "\n"+$$tags_text;
-
-	return true;
-
+	return  $$text;
 
 //ctags_search.exe を起動してctagsのシンボルを取得する。
 RunCtagsSearch:
@@ -115,7 +257,7 @@ RunCtagsSearch:
 			, 1 			//nodraw  0:draw 1:no draw
 			, 0 			//unicode 0:ansi 2:unicode
 			;
-	##ret 	= result;
+	##ret	= result;
 	if(! ##ret){
 		message("runexで失敗");
 		return false;
@@ -123,6 +265,7 @@ RunCtagsSearch:
 	##retex = getresultex(9);
 	if(0 != ##retex){
 		message($g_ctag_search_filename + "  のコマンドラインへの返値が失敗でした。\n");
+		//endmacro;
 		return false;
 	}
 	return true;
@@ -162,7 +305,7 @@ ParseCtagsLine:
 
 （例）
 入力
-	/^  struct SystemZRRIAddressMode {$/;"
+	/^	struct SystemZRRIAddressMode {$/;"
 
 出力
 	  struct SystemZRRIAddressMode {
@@ -223,50 +366,116 @@ ParseAllLine:
 	return true;
 
 
-//前後のコメントを抜き出す
-ExtractCommentSingle:
-	selectline;
-	$$func_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+/*前の行に向かってコメントを探す
 
-	//先頭方向の空白(\t\n )を読み飛ばす
-	golinetop2;
+コメントがあれば範囲選択する。
+*/
+ExtractCommentSingleFront:
+	/*先頭方向の空白(\t\n )を読み飛ばす
+
+	（メモ）
+		#コメント １行目
+		#コメント ２行目
+
+		＜＜この行に空白があれば読み飛ばす＞＞
+
+		int my_function(arg1, arg2) {
+	*/
+	##color_code = ##1;
 	searchup "[^ \\t\\n]",regular ;
 
-	##old_column=column;
+	##old_column=column+1;	//＋１してヒットした文字が範囲選択（後半で処理する）に含まれるようにしておく。
 	##old_lineno=lineno;
-	golinetop;
+	golinetop2;
 	##cur_lineno = lineno;
 
+	##has_comment=false;
 	//先頭に向かって探す
 	##max_loop	= 10;
-	##cnt 		= 0;
-	##ret = true;
+	##cnt		= 0;
+	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
-		if(0x00000003 != (0x00000003 & colorcode)){
-			//コメント以外が現れた
-			break;
+		if(##color_code != (0x0000001f & colorcode)){
+			/*コメント以外が現れた
+
+			コメント先頭の空白文字を読み飛ばして、コメントかどうかを更に調べる。
+			（以下のようなコメントになっている）
+				//コメント１
+				//コメント２
+			void function(zarg1,arg2){
+			*/
+			##prev_lineno=lineno;
+			wordright;
+			if(##prev_lineno != lineno){
+				//行番号が変わった
+				goto LoopExit_l;
+			}
+			if(##color_code != (0x0000001f & colorcode)){
+				//break;
+				goto LoopExit_l;
+			}
+			golinetop2;
 		}
+
 		//コメント行である
+		##has_comment=true;
 		##cur_lineno = lineno;
 		##cnt = ##cnt + 1;
 		up;
 		##ret=result;
 	}
 
-	if(##cur_lineno == ##old_lineno){
-		//前方にはコメントが無かった。
-		//後方に向かって探す
+LoopExit_l:
+	if(##has_comment){
+		//コメント行あり
+		call SelectRange ##old_column, ##old_lineno, 0, ##cur_lineno;
+	}
+	return ##has_comment;
+
+
+//前後のコメントを抜き出す
+ExtractCommentSingle:
+	//「ファイル名＋行番号」
+	//アウトプット枠へ出力したときにジャンプできるようにしておく。
+	$$file_line = filename2 + "(" + str(lineno) + "):";
+
+	selectline;
+	//関数の行を抜き出す。
+	$$func_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+	golinetop2;
+	##old_column=column;
+	##old_lineno=lineno;
+
+	//まず、コメントを探す
+	call ExtractCommentSingleFront 0x00000003;
+	##has_comment =  ##return;
+	if(! ##has_comment){
+		//コメント無し、文字列を探す。
+		moveto2 ##old_column, ##old_lineno;
+		call ExtractCommentSingleFront 0x00000014;
+		##has_comment =  ##return;
 	}
 
-	call SelectRange ##old_column, ##old_lineno, 1, ##cur_lineno;
-	$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
-	return $$text + "\x0d\x0a" + $$func_text;
+	if(##has_comment){
+		//コメント行あり
+		//call SelectRange ##old_column, ##old_lineno, 0, ##cur_lineno;
+		$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
+	}else{
+		$$text = "";
+	}
+
+	return $$file_line + "\x0d\x0a" + $$text + $$func_text;
 
 
 OpenFile:
 	$$filename = $$1;
 	if(existfile($$filename)){
-		readonlyopenfile $$filename;
+		loadfile $$filename;
+		//openfile "/m5 /h /r " + "\""	+ $$filename +"\"";
+		showwindow 0;
+		if( ! readonly ) {
+			readonlyswitch;
+		}
 		return result;
 	}
 	return false;
@@ -275,8 +484,9 @@ OpenFile:
 ExtractCommentAll:
 	$$dir_name = $$1;
 	if(#g_NumTags){
-		##cnt = 0;
+		setcompatiblemode 0x0050;
 
+		##cnt = 0;
 		$$prev_abs_filename = "";
 		while(##cnt < #g_NumTags){
 			$$abs_filename = $$dir_name + $g_Filenames[##cnt];
@@ -288,13 +498,11 @@ ExtractCommentAll:
 			}
 
 			if(##ret){
-				//message("@@");
 				gofiletop;
 				searchdown2 $g_Regexs[##cnt], casesense, noregular, nohilight;
 				if(result){
 					call ExtractCommentSingle;
 					$g_Comments[#g_NumComments] = $$return;
-					//message($g_Comments[#g_NumComments]);
 					#g_NumComments = #g_NumComments + 1;
 				}
 				$$prev_abs_filename = $$abs_filename;
@@ -323,28 +531,27 @@ GetDirName:
 	return leftstr($$filename,##pos+1);
 
 OutputComment:
-	call OpenOutput;
-	call ClearOutput;
-	
-	##hdl = hidemaruhandle(0);
-	##cnt = 0;
 	$$text = "";
+	##cnt = 0;
 	while(##cnt < #g_NumComments){
 		$$text = $$text + "========================================================================\x0d\x0a" +
 				$g_Comments[##cnt] + "\x0d\x0a";
 		##cnt = ##cnt + 1;
 	}
-	##ret=dllfunc("Output",##hdl,$$text);
+	if(1){
+		call OpenOutput;
+		call ClearOutput;
+		##hdl = hidemaruhandle(0);
+		##ret=dllfunc("Output",##hdl,$$text);
+	}else{
+		message($$text);
+	}
 	return ;
 
 
-GetTooltipString:
-	$$tags_abs_filename	= $$1;
-	$$text 				= $$2;
-
-	##old_hidemaru = hidemaruhandle(0);
-	openfile "/h ";
-	##new_hidemaru = hidemaruhandle(0);
+GetTooltipStringMain:
+	$$tags_abs_filename = $$1;
+	$$text				= $$2;
 
 	call RunCtagsSearch $$tags_abs_filename, $$text;
 	if(! ##return){
@@ -354,8 +561,8 @@ GetTooltipString:
 	//
 	//現時点でこのようなテキストが得られている。
 	//
-	//Syntax	.\lib\MC\MCDisassembler\EDDisassembler.h	/^    AssemblySyntax Syntax;$/;"	m	struct:llvm::EDDisassembler::CPUKey
-	//SyntaxCheckTest	.\utils\lit\lit\LitFormats.py	/^from TestFormats import SyntaxCheckTest, OneCommandPerFileTest$/;"	i
+	//Syntax	.\lib\MC\MCDisassembler\EDDisassembler.h	/^	  AssemblySyntax Syntax;$/;"    m   struct:llvm::EDDisassembler::CPUKey
+	//SyntaxCheckTest	.\utils\lit\lit\LitFormats.py	/^from TestFormats import SyntaxCheckTest, OneCommandPerFileTest$/;"    i
 	//
 
 	//ctagsの１行をパースするためにdengaku-dllを使用します。
@@ -377,19 +584,34 @@ GetTooltipString:
 	if(! ##return){
 		return false;
 	}
-
-	call OutputComment;
-
-	setactivehidemaru 	##old_hidemaru;
-	closehidemaruforced ##new_hidemaru;
 	return true;
+
+
+GetTooltipString:
+	$$tags_abs_filename = $$1;
+	$$text				= $$2;
+
+	##old_hidemaru = hidemaruhandle(0);
+	openfile "/h ";
+	##new_hidemaru = hidemaruhandle(0);
+
+	call GetTooltipStringMain $$tags_abs_filename,  $$text;
+	##ret =  ##return;
+
+	setactivehidemaru	##old_hidemaru;
+	closehidemaruforced ##new_hidemaru;
+
+	if(##ret){
+		call OutputComment;
+	}
+	return ##ret;
 
 
 SelectRange:
 	escape;
-	movetolineno 1+##1, ##2;
+	moveto2  ##1, ##2;
 	beginsel;
-	movetolineno 1+##3, ##4;
+	moveto2  ##3, ##4;
 	endsel;
 	return ;
 
@@ -412,6 +634,64 @@ ClearOutput:
 	#h=dllfunc("GetWindowHandle",hidemaruhandle(0));
 	#ret=sendmessage(#h,0x111/*WM_COMMAND*/,1009,0);
 	return ;
+
+
+ParseIni:
+	$$section = "Search";
+
+	//tagsの解釈
+	$$ret=getinistr($g_ini_abs_path,$$section,"Tags");
+	if(""!=$$ret){
+		$g_ini_tags=$$ret;
+	}
+
+	//Path[0-N]の解釈
+	##i=0;
+	while(##i < #g_ini_path_max){
+		$$ret = getinistr($g_ini_abs_path,$$section,"Path"+str(##i));
+		if("" == $$ret){
+			break;
+		}
+		$g_ini_path[##i]=$$ret;
+		##i = ##i + 1;
+	}
+	#g_ini_path_num = ##i;
+
+
+	//Priority[0-3]の解釈
+	##i=0;
+	while(##i < #g_ini_priority_max){
+		$$ret = getinistr($g_ini_abs_path,$$section,"Priority"+str(##i));
+		if("" == $$ret){
+			break;
+		}
+		call CheckIniPriorityString $$ret;
+		if(! ##return){
+			return false;
+		}
+		$g_ini_priority[##i]=$$ret;
+		##i = ##i + 1;
+	}
+	#g_ini_priority_num=##i;
+
+	return true;
+
+
+CheckIniPriorityString:
+	$$arg 	= $$1;
+	$$text 	= tolower($$1);
+	##i=0;
+	while(##i < #g_ini_priority_string_num){
+		if($$text == $g_ini_priority_string[##i]){
+			return true;
+		}
+		##i = ##i + 1;
+	}
+	message("iniファイルの Priorityキー が間違っています。\n"	+
+			"iniファイル："+$g_ini_abs_path + "\n"				+
+			"間違っている値：" + $$arg + "\n"
+	);
+	return false;
 
 
 LoadDengakuDLL:
@@ -443,10 +723,12 @@ FreeDengakuDLL:
 //環境の検査
 CheckEnvironment:
 	if(! existfile($g_ctag_search_abs_path)){
-		message("実行ファイルが見つかりません。\n" 			+
-				"マクロを再インストールして下さい。\n" 	+
+		message("実行ファイルが見つかりません。\n"			+
+				"マクロを再インストールして下さい。\n"	+
 				$g_ctag_search_filename);
 		return false;
 	}
 
 	return true;
+
+
