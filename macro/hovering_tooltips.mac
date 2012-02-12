@@ -27,7 +27,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//		ユーザーカスタマイズ
+//		メイン処理
 ////////////////////////////////////////////////////////////////////////////////
 
 //
@@ -40,16 +40,18 @@ $g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
 $g_ini_filename 	= "hovering_tooltips_config.ini";
 $g_ini_abs_path 	= currentmacrodirectory + "\\" + $g_ini_filename;
 
+//「関数・シンボル」コメントを探す最大行数
+#g_max_comment_lines=10;
 
-//テスト用。
-//本番はiniファイルから取得する
-//$g_tag_filename = "C:\\Users\\hoge\\Documents\\llvm-3.0.src\\tags";
+//tagsの最大行数
+#g_max_tags_lines=10;
 
-//iniファイル：Pathの最大値
+//iniファイル：Pathの最大値（多分増やしても大丈夫なはず・・・）
 #g_ini_path_max = 10;
 
-//iniファイル：Priority[0-3]
+//iniファイル：Priority[0-3]（ここは、３で固定）
 #g_ini_priority_max=3;
+
 //iniファイル：Priorityへ指定する文字列（小文字で指定すること）
 //memo:もし、増減するようなことがあればMainPost関数内の処理も変更すること。
 $g_ini_priority_string[0]	= "current";
@@ -57,13 +59,6 @@ $g_ini_priority_string[1]	= "path";
 $g_ini_priority_string[2]	= "upperdir";
 #g_ini_priority_string_num	= 3;
 
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-//		メイン処理
-////////////////////////////////////////////////////////////////////////////////
 
 //DengakuDLLをロードしたかどうか
 #g_load_dengaku = false;
@@ -97,9 +92,10 @@ $g_ini_path			= "";
 $g_ini_priority		= "";
 #g_ini_priority_num	= 0;
 
+
+
 call Main;
 endmacro;
-
 
 Main:
 	disabledraw;
@@ -152,11 +148,11 @@ MainPost:
 		}else{
 			//pass
 		}
-		
+
 		##i = ##i + 1;
 	}
 	return ##ret;
-	
+
 
 MainPostDoCurrent:
 	$$text = $$1;
@@ -168,10 +164,10 @@ MainPostDoCurrent:
 			//コメントを抜き出した
 			return true;
 		}
-	}	
+	}
 	return false;
-	
-	
+
+
 MainPostDoPath:
 	$$text 	= $$1;
 	##i		= 0;
@@ -184,12 +180,12 @@ MainPostDoPath:
 				//コメントを抜き出した
 				return true;
 			}
-		}	
+		}
 		##i = ##i + 1;
 	}
 	return false;
-	
-	
+
+
 MainPostDoUpperDir:
 	$$text 	= $$1;
 	##obj=createobject("Scripting.FileSystemObject");
@@ -219,8 +215,8 @@ MainPostDoUpperDir:
 	}
 	releaseobject ##obj;
 	return false;
-	
-	
+
+
 GetSearchText:
 	##old_column=column;
 	##old_lineno=lineno;
@@ -335,8 +331,8 @@ PerlRegToHidemaruReg:
 
 ParseAllLine:
 	##count 	= 0;
-	##max_loop = 10;//最大ループ回数（無限ループ防止）
-	##down_ret = true;
+	##max_loop 	= #g_max_tags_lines;//最大ループ回数（無限ループ防止）
+	##down_ret 	= true;
 //$$aaa="";
 	//一行ずつパースする
 	while((##count<##max_loop) && ##down_ret){
@@ -366,7 +362,24 @@ ParseAllLine:
 	return true;
 
 
-/*前の行に向かってコメントを探す
+SearchRightWord:
+	##color_code	= ##1;
+	##prev_lineno	= lineno;
+	right;
+	##ret=result;
+	while(##ret && (##prev_lineno==lineno)){
+		if(##color_code == (0x0000001f & colorcode)){
+			//コメント行である
+			return true;
+		}
+		right;
+		##ret=result;
+	}
+	
+	return false;
+	
+	
+/*前方の行からコメントを探す
 
 コメントがあれば範囲選択する。
 */
@@ -391,7 +404,7 @@ ExtractCommentSingleFront:
 
 	##has_comment=false;
 	//先頭に向かって探す
-	##max_loop	= 10;
+	##max_loop	= #g_max_comment_lines;
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
@@ -404,15 +417,9 @@ ExtractCommentSingleFront:
 				//コメント２
 			void function(zarg1,arg2){
 			*/
-			##prev_lineno=lineno;
-			wordright;
-			if(##prev_lineno != lineno){
-				//行番号が変わった
-				goto LoopExit_l;
-			}
-			if(##color_code != (0x0000001f & colorcode)){
-				//break;
-				goto LoopExit_l;
+			call SearchRightWord ##color_code;
+			if(! ##return){
+				goto LoopExitF_l;
 			}
 			golinetop2;
 		}
@@ -425,12 +432,76 @@ ExtractCommentSingleFront:
 		##ret=result;
 	}
 
-LoopExit_l:
+LoopExitF_l:
 	if(##has_comment){
 		//コメント行あり
 		call SelectRange ##old_column, ##old_lineno, 0, ##cur_lineno;
 	}
 	return ##has_comment;
+
+
+/*後方の行からコメントを探す
+
+コメントがあれば範囲選択する。
+*/
+ExtractCommentSingleBack:
+	/*後方方向の空白(\t\n )を読み飛ばす
+
+	（メモ）
+		int my_function(arg1, arg2) {
+
+		＜＜この行に空白があれば読み飛ばす＞＞
+
+		#コメント １行目
+		#コメント ２行目
+	*/
+	##color_code = ##1;
+	searchdown "[^ \\t\\n]",regular ;
+	golinetop2;
+	##old_column=column;
+	##old_lineno=lineno;
+	
+	##cur_lineno= lineno;
+	##cur_column = 0;
+	
+	##has_comment=false;
+	//後方に向かって探す
+	##max_loop	= #g_max_comment_lines;
+	##cnt		= 0;
+	##ret 		= true;
+	while((##cnt < ##max_loop) && ##ret){
+		if(##color_code != (0x0000001f & colorcode)){
+			/*コメント以外が現れた
+
+			コメント先頭の空白文字を読み飛ばして、コメントかどうかを更に調べる。
+			（以下のようなコメントになっている）
+			void function(zarg1,arg2){
+				//コメント１
+				//コメント２
+			*/
+			call SearchRightWord ##color_code;
+			if(! ##return){
+				goto LoopExitB_l;
+			}
+			golinetop2;
+		}
+
+		//コメント行である
+		##has_comment=true;
+		##cur_lineno = lineno;
+		##cur_column = linelen2;
+		##cnt = ##cnt + 1;
+		down;
+		##ret=result;
+	}
+
+LoopExitB_l:
+	if(##has_comment){
+		//コメント行あり
+		call SelectRange ##old_column, ##old_lineno, ##cur_column, ##cur_lineno;
+	}
+	return ##has_comment;
+
 
 
 //前後のコメントを抜き出す
@@ -442,11 +513,17 @@ ExtractCommentSingle:
 	selectline;
 	//関数の行を抜き出す。
 	$$func_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+	$$text_front="";
+	$$text_back ="";
+	
 	golinetop2;
 	##old_column=column;
 	##old_lineno=lineno;
-
-	//まず、コメントを探す
+	
+	
+	//
+	//前方コメント
+	//
 	call ExtractCommentSingleFront 0x00000003;
 	##has_comment =  ##return;
 	if(! ##has_comment){
@@ -455,16 +532,32 @@ ExtractCommentSingle:
 		call ExtractCommentSingleFront 0x00000014;
 		##has_comment =  ##return;
 	}
-
+	
 	if(##has_comment){
 		//コメント行あり
-		//call SelectRange ##old_column, ##old_lineno, 0, ##cur_lineno;
-		$$text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
-	}else{
-		$$text = "";
+		$$text_front = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
+	}
+	
+	
+	//
+	//後方コメント
+	//
+	moveto2 ##old_column, ##old_lineno;
+	golineend2;
+	call ExtractCommentSingleBack 0x00000003;
+	##has_comment =  ##return;
+	if(! ##has_comment){
+		//コメント無し、文字列を探す。
+		moveto2 ##old_column, ##old_lineno;
+		golineend2;
+		call ExtractCommentSingleBack 0x00000014;
+		##has_comment =  ##return;
+	}
+	if(##has_comment){
+		$$text_back = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
 	}
 
-	return $$file_line + "\x0d\x0a" + $$text + $$func_text;
+	return $$file_line + "\x0d\x0a" + $$text_front + $$func_text + $$text_back;
 
 
 OpenFile:
@@ -472,7 +565,7 @@ OpenFile:
 	if(existfile($$filename)){
 		loadfile $$filename;
 		//openfile "/m5 /h /r " + "\""	+ $$filename +"\"";
-		showwindow 0;
+		//showwindow 0;
 		if( ! readonly ) {
 			readonlyswitch;
 		}
