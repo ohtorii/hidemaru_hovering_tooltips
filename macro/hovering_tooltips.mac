@@ -134,7 +134,7 @@ MainPost:
 	##old_hidemaru = hidemaruhandle(0);
 	openfile "/h ";
 	##new_hidemaru = hidemaruhandle(0);
-	
+
 	##ret=false;
 	##i=0;
 	while((##i < #g_ini_priority_num) && (! ##ret)){
@@ -155,10 +155,10 @@ MainPost:
 
 		##i = ##i + 1;
 	}
-	
+
 	setactivehidemaru	##old_hidemaru;
 	closehidemaruforced ##new_hidemaru;
-	
+
 	call OutputComment;
 	return ##ret;
 
@@ -320,9 +320,9 @@ PerlRegToHidemaruReg:
 	$$text = $$1;
 	##len = strlen($$text);
 	//先頭の /^ を削除。
-	$$text=dllfuncstr("BRE_SUBST", "s/\\/\\^//g", $$text);
+	$$text=dllfuncstr("BRE_SUBST", "s/^\\/\\^//g", $$text);
 	//末尾の $/;" を削除。
-	$$text=dllfuncstr("BRE_SUBST", "s/\\$\\/;\\\"//g", $$text);
+	$$text=dllfuncstr("BRE_SUBST", "s/\\$\\/;\\\"$//g", $$text);
 	//\\ -> \
 	$$text=dllfuncstr("BRE_SUBST", "s/\\\\\\\\/\\\\/g", $$text);
 	//\/ -> /
@@ -334,7 +334,6 @@ ParseAllLine:
 	##count 	= 0;
 	##max_loop 	= #g_max_tags_lines;//最大ループ回数（無限ループ防止）
 	##down_ret 	= true;
-//$$aaa="";
 	//一行ずつパースする
 	while((##count<##max_loop) && ##down_ret){
 		if(0==linelen2){
@@ -376,10 +375,10 @@ SearchRightWord:
 		right;
 		##ret=result;
 	}
-	
+
 	return false;
-	
-	
+
+
 /*前方の行からコメントを探す
 
 コメントがあれば範囲選択する。
@@ -461,10 +460,10 @@ ExtractCommentSingleBack:
 	golinetop2;
 	##old_column=column;
 	##old_lineno=lineno;
-	
+
 	##cur_lineno= lineno;
 	##cur_column = 0;
-	
+
 	##has_comment=false;
 	//後方に向かって探す
 	##max_loop	= #g_max_comment_lines;
@@ -516,12 +515,12 @@ ExtractCommentSingle:
 	$$func_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
 	$$text_front="";
 	$$text_back ="";
-	
+
 	golinetop2;
 	##old_column=column;
 	##old_lineno=lineno;
-	
-	
+
+
 	//
 	//前方コメント
 	//
@@ -529,17 +528,16 @@ ExtractCommentSingle:
 	##has_comment =  ##return;
 	if(! ##has_comment){
 		//コメント無し、文字列を探す。
-		moveto2 ##old_column, ##old_lineno;
+		/*moveto2 ##old_column, ##old_lineno;
 		call ExtractCommentSingleFront 0x00000014;
-		##has_comment =  ##return;
+		##has_comment =  ##return;*/
 	}
-	
+
 	if(##has_comment){
 		//コメント行あり
 		$$text_front = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
 	}
-	
-	
+
 	//
 	//後方コメント
 	//
@@ -549,10 +547,10 @@ ExtractCommentSingle:
 	##has_comment =  ##return;
 	if(! ##has_comment){
 		//コメント無し、文字列を探す。
-		moveto2 ##old_column, ##old_lineno;
+		/*moveto2 ##old_column, ##old_lineno;
 		golineend2;
 		call ExtractCommentSingleBack 0x00000014;
-		##has_comment =  ##return;
+		##has_comment =  ##return;*/
 	}
 	if(##has_comment){
 		$$text_back = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
@@ -678,6 +676,10 @@ GetTooltipStringMain:
 		return false;
 	}
 
+	//RunCtagsSearch で取得したテキストを削除する
+	selectall;
+	backspace;
+
 	call GetDirName $$tags_abs_filename;
 	$$dir_name = $$return;
 
@@ -802,7 +804,7 @@ LoadDengakuDLL:
     		freedll;
     		return false;
 		}
-		
+
 		#g_load_dengaku=true;
 	}
 	return true;
