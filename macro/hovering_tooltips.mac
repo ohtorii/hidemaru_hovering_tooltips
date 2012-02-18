@@ -319,22 +319,14 @@ ParseCtagsLine:
 PerlRegToHidemaruReg:
 	$$text = $$1;
 	##len = strlen($$text);
-
 	//æ“ª‚Ì /^ ‚ðíœB
-	$$str_head = "/^";
-	##str_head_len = 2;
-	if($$str_head == leftstr($$text,##str_head_len)){
-		$$text = midstr($$text,##str_head_len, ##len - ##str_head_len);
-		##len = ##len - ##str_head_len;
-	}
-
+	$$text=dllfuncstr("BRE_SUBST", "s/\\/\\^//g", $$text);
 	//––”ö‚Ì $/;" ‚ðíœB
-	$$str_tail = "$/;\"";
-	##str_tail_len = 4;
-	if($$str_tail == rightstr($$text,##str_tail_len)){
-		$$text = midstr($$text,0,##len - ##str_tail_len);
-	}
-
+	$$text=dllfuncstr("BRE_SUBST", "s/\\$\\/;\\\"//g", $$text);
+	//\\ -> \
+	$$text=dllfuncstr("BRE_SUBST", "s/\\\\\\\\/\\\\/g", $$text);
+	//\/ -> /
+	$$text=dllfuncstr("BRE_SUBST", "s/\\\\\\//\\//g", $$text);
 	return $$text;
 
 
@@ -805,13 +797,19 @@ LoadDengakuDLL:
 			freedll;
 			return false;
 		}
-
+		if (!dllfunc("BRE_LOAD", "BREGEXP.DLL")) {
+			message "BREGEXP.DLL ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ";
+    		freedll;
+    		return false;
+		}
+		
 		#g_load_dengaku=true;
 	}
 	return true;
 
 FreeDengakuDLL:
 	if(#g_load_dengaku){
+		//##n=dllfunc("BRE_FREE");
 		freedll;
 		#g_load_dengaku=false;
 	}
