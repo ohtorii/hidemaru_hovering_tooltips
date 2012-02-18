@@ -368,7 +368,7 @@ SearchRightWord:
 	right;
 	##ret=result;
 	while(##ret && (##prev_lineno==lineno)){
-		if(##color_code == (0x0000001f & colorcode)){
+		if(##color_code == (0x0000001f & colorcode[2])){
 			//コメント行である
 			return true;
 		}
@@ -408,7 +408,7 @@ ExtractCommentSingleFront:
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
-		if(##color_code != (0x0000001f & colorcode)){
+		if(##color_code != (0x0000001f & colorcode[2])){
 			/*コメント以外が現れた
 
 			コメント先頭の空白文字を読み飛ばして、コメントかどうかを更に調べる。
@@ -470,7 +470,7 @@ ExtractCommentSingleBack:
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
-		if(##color_code != (0x0000001f & colorcode)){
+		if(##color_code != (0x0000001f & colorcode[2])){
 			/*コメント以外が現れた
 
 			コメント先頭の空白文字を読み飛ばして、コメントかどうかを更に調べる。
