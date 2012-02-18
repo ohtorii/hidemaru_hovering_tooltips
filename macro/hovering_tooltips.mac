@@ -131,6 +131,10 @@ MainPost:
 		return false;
 	}
 
+	##old_hidemaru = hidemaruhandle(0);
+	openfile "/h ";
+	##new_hidemaru = hidemaruhandle(0);
+	
 	##ret=false;
 	##i=0;
 	while((##i < #g_ini_priority_num) && (! ##ret)){
@@ -151,6 +155,11 @@ MainPost:
 
 		##i = ##i + 1;
 	}
+	
+	setactivehidemaru	##old_hidemaru;
+	closehidemaruforced ##new_hidemaru;
+	
+	call OutputComment;
 	return ##ret;
 
 
@@ -623,21 +632,28 @@ GetDirName:
 	//+1‚µ‚Ä‹æØ‚è(\/)‚ðž‚ß‚é
 	return leftstr($$filename,##pos+1);
 
-OutputComment:
+MakeOutputComment:
 	$$text = "";
-	##cnt = 0;
+	##cnt  = 0;
 	while(##cnt < #g_NumComments){
 		$$text = $$text + "========================================================================\x0d\x0a" +
 				$g_Comments[##cnt] + "\x0d\x0a";
 		##cnt = ##cnt + 1;
 	}
-	if(1){
-		call OpenOutput;
-		call ClearOutput;
-		##hdl = hidemaruhandle(0);
-		##ret=dllfunc("Output",##hdl,$$text);
-	}else{
-		message($$text);
+	return $$text;
+
+OutputComment:
+	if(#g_NumComments){
+		call MakeOutputComment;
+		$$text = $$return;
+		if(1){
+			call OpenOutput;
+			call ClearOutput;
+			##hdl = hidemaruhandle(0);
+			##ret=dllfunc("Output",##hdl,$$text);
+		}else{
+			message($$text);
+		}
 	}
 	return ;
 
@@ -683,20 +699,8 @@ GetTooltipStringMain:
 GetTooltipString:
 	$$tags_abs_filename = $$1;
 	$$text				= $$2;
-
-	##old_hidemaru = hidemaruhandle(0);
-	openfile "/h ";
-	##new_hidemaru = hidemaruhandle(0);
-
 	call GetTooltipStringMain $$tags_abs_filename,  $$text;
 	##ret =  ##return;
-
-	setactivehidemaru	##old_hidemaru;
-	closehidemaruforced ##new_hidemaru;
-
-	if(##ret){
-		call OutputComment;
-	}
 	return ##ret;
 
 
