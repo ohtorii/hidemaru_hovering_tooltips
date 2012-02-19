@@ -32,7 +32,7 @@
 
 //
 $g_ctag_search_filename = "ctags_search.exe";
-$g_ctag_search_abs_path = "C:\\Users\\hoge\\Documents\\github\\hidemaru_hovering_tooltips\\src\\Release\\" + $g_ctag_search_filename;
+$g_ctag_search_abs_path = currentmacrodirectory + "\\" + $g_ctag_search_filename;
 
 $g_dengaku_filename = "DengakuDLL.dll";
 $g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
@@ -363,17 +363,19 @@ ParseAllLine:
 
 
 SearchRightWord:
-	##color_code	= ##1;
-	##prev_lineno	= lineno;
-	right;
-	##ret=result;
-	while(##ret && (##prev_lineno==lineno)){
-		if(##color_code == (0x0000001f & colorcode[2])){
-			//コメント行である
-			return true;
-		}
+	if((code==0x20) || (code==0x09)){
+		##color_code	= ##1;
+		##prev_lineno	= lineno;
 		right;
 		##ret=result;
+		while(##ret && (##prev_lineno==lineno)){
+			if(##color_code == (0x0000001f & colorcode[2])){
+				//コメント行である
+				return true;
+			}
+			right;
+			##ret=result;
+		}
 	}
 
 	return false;
