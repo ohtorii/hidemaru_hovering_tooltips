@@ -41,23 +41,23 @@ $g_ini_filename 	= "hovering_tooltips_config.ini";
 $g_ini_abs_path 	= currentmacrodirectory + "\\" + $g_ini_filename;
 
 //「関数・シンボル」コメントを探す最大行数
-#g_max_comment_lines=10;
+#g_const_max_comment_lines=10;
 
 //tagsの最大行数
-#g_max_tags_lines=10;
+#g_const_max_tags_lines=10;
 
 //iniファイル：Pathの最大値（多分増やしても大丈夫なはず・・・）
-#g_ini_path_max = 10;
+#g_const_ini_path_max = 10;
 
 //iniファイル：Priority[0-3]（ここは、３で固定）
-#g_ini_priority_max=3;
+#g_const_ini_priority_max=3;
 
 //iniファイル：Priorityへ指定する文字列（小文字で指定すること）
 //memo:もし、増減するようなことがあればMainPost関数内の処理も変更すること。
-$g_ini_priority_string[0]	= "current";
-$g_ini_priority_string[1]	= "path";
-$g_ini_priority_string[2]	= "upperdir";
-#g_ini_priority_string_num	= 3;
+$g_const_ini_priority_string[0]	= "current";
+$g_const_ini_priority_string[1]	= "path";
+$g_const_ini_priority_string[2]	= "upperdir";
+#g_const_ini_priority_string_num	= 3;
 
 
 //DengakuDLLをロードしたかどうか
@@ -69,12 +69,23 @@ $g_ParseCtagsLineResult_Filename	= "";	//ファイル名
 $g_ParseCtagsLineResult_Regex		= "";	//正規表現
 
 /*ctagsファイルをパースした結果を格納する配列。
-$Regexs[0...#g_NumTags]
-$Filenames[0...#g_NumTags]
+・正規表現式、又は、行番号
+	$Regexs[0...#g_NumTags]
+
+・ファイル名
+	$Filenames[0...#g_NumTags]
+
+・抜き出したtagsが「行番号(#g_const_TagModeLineNo)、正規表現(#g_const_TagModeRegex)」のどちらなのか。
+	#g_TagMode[0...#g_NumTags]
 */
 $g_Regexs		= "";
 $g_Filenames	= "";
+#g_TagMode		= 0;
 #g_NumTags		= 0;
+
+#g_const_TagModeLineNo	=0;
+#g_const_TagModeRegex	=1;
+
 
 /*コメント
 $Comments[0...N]
@@ -104,7 +115,8 @@ Main:
 	disableinvert;
 	$$old_searchbuffer = searchbuffer;
 	##old_searchoption = searchoption;
-
+	
+	
 	call MainPost;
 	##ret =  ##return;
 
@@ -137,6 +149,7 @@ MainPost:
 
 	##ret=false;
 	##i=0;
+	
 	while((##i < #g_ini_priority_num) && (! ##ret)){
 		$$tags_abs_filename = "";
 		$$priority = tolower($g_ini_priority[##i]);
@@ -152,7 +165,6 @@ MainPost:
 		}else{
 			//pass
 		}
-
 		##i = ##i + 1;
 	}
 
@@ -255,7 +267,7 @@ RunCtagsSearch:
 	runex $$cmd
 			, 1 			//sync	  0:async 1:sync
 			, 0, "" 		//stdin   0:none 1:auto 2:file 3:(reserve) 4:all 5:select
-			, 1, "" 		//stdout  0:none 1:auto 2:file 3:add file  4:new 5:insert 6:replace
+			, 5, "" 		//stdout  0:none 1:auto 2:file 3:add file  4:new 5:insert 6:replace
 			, 0, "" 		//stderr  0:none 1:=out 2:file 3:add file  4:new 5:insert 6:replace
 			, 0, "" 		//folder  0:none 1:current 2:specify 3:(reserve) 4:exe's folder
 			, 2 			//show	  0:auto 1:show 2:hide
@@ -270,7 +282,6 @@ RunCtagsSearch:
 	##retex = getresultex(9);
 	if(0 != ##retex){
 		message($g_ctag_search_filename + "  のコマンドラインへの返値が失敗でした。\n");
-		//endmacro;
 		return false;
 	}
 	return true;
@@ -330,10 +341,30 @@ PerlRegToHidemaruReg:
 	return $$text;
 
 
+PerlRegToLineNo:
+	$$text = $$1;
+	//末尾の ;" を削除。
+	return dllfuncstr("BRE_SUBST", "s/;\\\"//g", $$text);
+
+
+/*以下のどのパターンなのか調べる
+	行番号	：44;"
+	正規表現：/^char r8[5] = "5char";$/;"
+
+返値：	0 行番号
+		1 正規表現
+*/
+IsRegString:
+	if("/^" == leftstr($$1, 2)){
+		return 1;
+	}
+	return 0;
+
 ParseAllLine:
 	##count 	= 0;
-	##max_loop 	= #g_max_tags_lines;//最大ループ回数（無限ループ防止）
+	##max_loop 	= #g_const_max_tags_lines;//最大ループ回数（無限ループ防止）
 	##down_ret 	= true;
+	#g_NumTags	= 0;
 	//一行ずつパースする
 	while((##count<##max_loop) && ##down_ret){
 		if(0==linelen2){
@@ -346,7 +377,14 @@ ParseAllLine:
 		if(! ##return){
 			return false;
 		}
-		call PerlRegToHidemaruReg $g_ParseCtagsLineResult_Regex;
+		call IsRegString $g_ParseCtagsLineResult_Regex;
+		##TagMode =  ##return;
+		#g_TagMode[#g_NumTags] = ##TagMode;
+		if(#g_const_TagModeLineNo == ##TagMode){
+			call PerlRegToLineNo $g_ParseCtagsLineResult_Regex;
+		}else{
+			call PerlRegToHidemaruReg $g_ParseCtagsLineResult_Regex;
+		}
 		//tagsファイルから抜き出した情報を保存しておく
 		$g_Regexs[#g_NumTags]		= $$return;
 		//$$aaa=$$aaa+ $$return + "\n";
@@ -357,8 +395,6 @@ ParseAllLine:
 		down;
 		##down_ret=result;
 	}
-	//insert $$aaa;
-	//endmacro;
 	return true;
 
 
@@ -406,7 +442,7 @@ ExtractCommentSingleFront:
 
 	##has_comment=false;
 	//先頭に向かって探す
-	##max_loop	= #g_max_comment_lines;
+	##max_loop	= #g_const_max_comment_lines;
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
@@ -468,7 +504,7 @@ ExtractCommentSingleBack:
 
 	##has_comment=false;
 	//後方に向かって探す
-	##max_loop	= #g_max_comment_lines;
+	##max_loop	= #g_const_max_comment_lines;
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
@@ -583,29 +619,40 @@ ExtractCommentAll:
 		##cnt = 0;
 		$$prev_abs_filename = "";
 		while(##cnt < #g_NumTags){
-			$$abs_filename = $$dir_name + $g_Filenames[##cnt];
-			if($$prev_abs_filename != $$abs_filename){
-				call OpenFile $$abs_filename;
-				##ret = ##return;
-			}else{
-				##ret = true;
-			}
-
-			if(##ret){
-				gofiletop;
-				searchdown2 $g_Regexs[##cnt], casesense, noregular, nohilight;
-				if(result){
-					call ExtractCommentSingle;
-					$g_Comments[#g_NumComments] = $$return;
-					#g_NumComments = #g_NumComments + 1;
+			$$reg = $g_Regexs[##cnt];
+			//memo: 空白文字のとき非表示の検索ダイアログが表示され秀丸エディタが固まる。念のため回避。
+			if("" != $$reg){
+				$$abs_filename = $$dir_name + $g_Filenames[##cnt];
+				if($$prev_abs_filename != $$abs_filename){
+					call OpenFile $$abs_filename;
+					##ret = ##return;
+				}else{
+					##ret = true;
 				}
-				$$prev_abs_filename = $$abs_filename;
+
+				if(##ret){
+					if(#g_const_TagModeLineNo == #g_TagMode[##cnt]){
+						movetolineno 1,val($$reg);
+					}else{
+						gofiletop;
+						searchdown2 $g_Regexs[##cnt], casesense, noregular, nohilight;
+					}
+					if(result){
+						call ExtractCommentSingle;
+						$g_Comments[#g_NumComments] = $$return;
+						#g_NumComments = #g_NumComments + 1;
+					}
+					$$prev_abs_filename = $$abs_filename;
+				}
 			}
 
 			##cnt = ##cnt + 1;
 		}
 	}
-	return true;
+	if(#g_NumComments){
+		return true;
+	}
+	return false;
 
 
 //ディレクトリ名を取得する
@@ -653,7 +700,11 @@ OutputComment:
 GetTooltipStringMain:
 	$$tags_abs_filename = $$1;
 	$$text				= $$2;
-
+	
+	//複数回呼ばれることがあるため残骸の削除
+	selectall;
+	backspace;
+	
 	call RunCtagsSearch $$tags_abs_filename, $$text;
 	if(! ##return){
 		return false;
@@ -740,7 +791,7 @@ ParseIni:
 
 	//Path[0-N]の解釈
 	##i=0;
-	while(##i < #g_ini_path_max){
+	while(##i < #g_const_ini_path_max){
 		$$ret = getinistr($g_ini_abs_path,$$section,"Path"+str(##i));
 		if("" == $$ret){
 			break;
@@ -753,7 +804,7 @@ ParseIni:
 
 	//Priority[0-3]の解釈
 	##i=0;
-	while(##i < #g_ini_priority_max){
+	while(##i < #g_const_ini_priority_max){
 		$$ret = getinistr($g_ini_abs_path,$$section,"Priority"+str(##i));
 		if("" == $$ret){
 			break;
@@ -774,8 +825,8 @@ CheckIniPriorityString:
 	$$arg 	= $$1;
 	$$text 	= tolower($$1);
 	##i=0;
-	while(##i < #g_ini_priority_string_num){
-		if($$text == $g_ini_priority_string[##i]){
+	while(##i < #g_const_ini_priority_string_num){
+		if($$text == $g_const_ini_priority_string[##i]){
 			return true;
 		}
 		##i = ##i + 1;
