@@ -115,8 +115,8 @@ Main:
 	disableinvert;
 	$$old_searchbuffer = searchbuffer;
 	##old_searchoption = searchoption;
-	
-	
+
+
 	call MainPost;
 	##ret =  ##return;
 
@@ -149,7 +149,7 @@ MainPost:
 
 	##ret=false;
 	##i=0;
-	
+
 	while((##i < #g_ini_priority_num) && (! ##ret)){
 		$$tags_abs_filename = "";
 		$$priority = tolower($g_ini_priority[##i]);
@@ -317,10 +317,10 @@ ParseCtagsLine:
 	$$text = $$1;
 	$$sep  = "\t";
 	##offset = 0;
-	
+
 	$g_ParseCtagsLineResult_Filename	= "";
 	$g_ParseCtagsLineResult_Regex		= "";
-	
+
 	//ƒVƒ“ƒ{ƒ‹–¼‚Ì––”ö
 	##tail_sym = strstr($$text,$$sep,##offset);
 	if(-1 == ##tail_sym){
@@ -334,19 +334,19 @@ ParseCtagsLine:
 		return false;
 	}
 	##offset=##tail_file+1;
-	
+
 	//³‹K•\Œ»‚Ì––”ö
 	##tail_reg = strrstr($$text,"/;\"");
 	if(-1 == ##tail_reg){
 		return false;
 	}
-	
+
 	$g_ParseCtagsLineResult_Filename= midstr($$text, ##tail_sym+1, (##tail_file-1) -  (##tail_sym+1) + 1);
 	//+3 ‚Í /;" ‚Ì’·‚³
 	$g_ParseCtagsLineResult_Regex 	= midstr($$text, ##tail_file+1, (##tail_reg-1) -  (##tail_file+1) + 1 + 3);
 	return true;
-	
-	
+
+
 /*Perl‚Ì³‹K•\Œ»‚ðGŠÛ‚Ì³‹K•\Œ»‚Ö•ÏŠ·
 
 iƒƒ‚j
@@ -733,11 +733,11 @@ OutputComment:
 GetTooltipStringMain:
 	$$tags_abs_filename = $$1;
 	$$text				= $$2;
-	
+
 	//•¡”‰ñŒÄ‚Î‚ê‚é‚±‚Æ‚ª‚ ‚é‚½‚ßŽcŠ[‚Ìíœ
 	selectall;
 	backspace;
-	
+
 	call RunCtagsSearch $$tags_abs_filename, $$text;
 	if(! ##return){
 		return false;
