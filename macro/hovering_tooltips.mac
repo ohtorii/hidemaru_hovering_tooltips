@@ -286,7 +286,7 @@ RunCtagsSearch:
 	}
 	return true;
 
-
+/*
 ParseCtagsLine:
 	$$text = $$1;
 	$$sep  = "\t";
@@ -311,9 +311,42 @@ ParseCtagsLine:
 	if (dllfunc("HASMORETOKENS") == 0) {
 		return false;
 	}
+	return true;*/
+
+ParseCtagsLine:
+	$$text = $$1;
+	$$sep  = "\t";
+	##offset = 0;
+	
+	$g_ParseCtagsLineResult_Filename	= "";
+	$g_ParseCtagsLineResult_Regex		= "";
+	
+	//シンボル名の末尾
+	##tail_sym = strstr($$text,$$sep,##offset);
+	if(-1 == ##tail_sym){
+		return false;
+	}
+	##offset=##tail_sym+1;
+
+	//ファイル名の末尾
+	##tail_file = strstr($$text,$$sep,##offset);
+	if(-1 == ##tail_file){
+		return false;
+	}
+	##offset=##tail_file+1;
+	
+	//正規表現の末尾
+	##tail_reg = strrstr($$text,"/;\"");
+	if(-1 == ##tail_reg){
+		return false;
+	}
+	
+	$g_ParseCtagsLineResult_Filename= midstr($$text, ##tail_sym+1, (##tail_file-1) -  (##tail_sym+1) + 1);
+	//+3 は /;" の長さ
+	$g_ParseCtagsLineResult_Regex 	= midstr($$text, ##tail_file+1, (##tail_reg-1) -  (##tail_file+1) + 1 + 3);
 	return true;
-
-
+	
+	
 /*Perlの正規表現を秀丸の正規表現へ変換
 
 （メモ）
@@ -606,6 +639,7 @@ OpenFile:
 		if( ! readonly ) {
 			readonlyswitch;
 		}
+		gofiletop;
 		return result;
 	}
 	return false;
@@ -634,7 +668,6 @@ ExtractCommentAll:
 					if(#g_const_TagModeLineNo == #g_TagMode[##cnt]){
 						movetolineno 1,val($$reg);
 					}else{
-						gofiletop;
 						searchdown2 $g_Regexs[##cnt], casesense, noregular, nohilight;
 					}
 					if(result){
