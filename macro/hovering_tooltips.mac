@@ -143,6 +143,8 @@ MainPost:
 		return false;
 	}
 
+	title "マクロ処理中";
+
 	##old_hidemaru = hidemaruhandle(0);
 	openfile "/h ";
 	##new_hidemaru = hidemaruhandle(0);
@@ -286,13 +288,15 @@ RunCtagsSearch:
 	}
 	return true;
 
-/*
-ParseCtagsLine:
+
+/* tagsファイルからdefineを抜き出す。
+
+(Ex.)
+MY_DEFINE	.\include\foo.h	118;"	d
+*/
+ParseCtagsLineDefine:
 	$$text = $$1;
 	$$sep  = "\t";
-
-	$g_ParseCtagsLineResult_Filename	= "";
-	$g_ParseCtagsLineResult_Regex		= "";
 
 	//シンボル名
 	$token = dllfuncstr("GETTOKEN",$$text,$$sep);
@@ -311,15 +315,14 @@ ParseCtagsLine:
 	if (dllfunc("HASMORETOKENS") == 0) {
 		return false;
 	}
-	return true;*/
+	return true;
 
-ParseCtagsLine:
+/*tagsファイルから正規表現を抜き出す
+*/
+ParseCtagsLineReg:
 	$$text = $$1;
 	$$sep  = "\t";
 	##offset = 0;
-
-	$g_ParseCtagsLineResult_Filename	= "";
-	$g_ParseCtagsLineResult_Regex		= "";
 
 	//シンボル名の末尾
 	##tail_sym = strstr($$text,$$sep,##offset);
@@ -345,6 +348,20 @@ ParseCtagsLine:
 	//+3 は /;" の長さ
 	$g_ParseCtagsLineResult_Regex 	= midstr($$text, ##tail_file+1, (##tail_reg-1) -  (##tail_file+1) + 1 + 3);
 	return true;
+
+ParseCtagsLine:
+	$$text = $$1;
+	$g_ParseCtagsLineResult_Filename	= "";
+	$g_ParseCtagsLineResult_Regex		= "";
+
+	$$tail = rightstr(dllfuncstr("RTRIM",$$text),2);
+	if("\td" == $$tail){
+		call ParseCtagsLineDefine $$text;
+	}else{
+		call ParseCtagsLineReg $$text;
+	}
+
+	return ##return;
 
 
 /*Perlの正規表現を秀丸の正規表現へ変換
@@ -634,13 +651,14 @@ OpenFile:
 	$$filename = $$1;
 	if(existfile($$filename)){
 		loadfile $$filename;
+		##ret = result;
 		//openfile "/m5 /h /r " + "\""	+ $$filename +"\"";
 		//showwindow 0;
 		if( ! readonly ) {
 			readonlyswitch;
 		}
 		gofiletop;
-		return result;
+		return ##ret;
 	}
 	return false;
 
@@ -704,28 +722,32 @@ GetDirName:
 	//+1して区切り(\/)を込める
 	return leftstr($$filename,##pos+1);
 
+
 MakeOutputComment:
 	$$text = "";
-	##cnt  = 0;
-	while(##cnt < #g_NumComments){
-		$$text = $$text + "========================================================================\x0d\x0a" +
-				$g_Comments[##cnt] + "\x0d\x0a";
-		##cnt = ##cnt + 1;
+	if(#g_NumComments){
+		##cnt  = 0;
+		while(##cnt < #g_NumComments){
+			$$text = $$text + "========================================================================\x0d\x0a" +
+					$g_Comments[##cnt] + "\x0d\x0a";
+			##cnt = ##cnt + 1;
+		}
+	}else{
+		$$text = "コメントが見つかりませんでした。";
 	}
 	return $$text;
 
+
 OutputComment:
-	if(#g_NumComments){
-		call MakeOutputComment;
-		$$text = $$return;
-		if(1){
-			call OpenOutput;
-			call ClearOutput;
-			##hdl = hidemaruhandle(0);
-			##ret=dllfunc("Output",##hdl,$$text);
-		}else{
-			message($$text);
-		}
+	call MakeOutputComment;
+	$$text = $$return;
+	if(1){
+		call OpenOutput;
+		call ClearOutput;
+		##hdl = hidemaruhandle(0);
+		##ret=dllfunc("Output",##hdl,$$text);
+	}else{
+		message($$text);
 	}
 	return ;
 
