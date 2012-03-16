@@ -24,13 +24,9 @@
 	（導入の敷居はちょっとだけ高いです、スイマセン）
 */
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
-//		メイン処理
+//		exe/dll/ini のパス設定
 ////////////////////////////////////////////////////////////////////////////////
-
-//
 $g_ctag_search_filename = "ctags_search.exe";
 $g_ctag_search_abs_path = currentmacrodirectory + "\\" + $g_ctag_search_filename;
 
@@ -40,6 +36,10 @@ $g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
 $g_ini_filename 	= "hovering_tooltips_config.ini";
 $g_ini_abs_path 	= currentmacrodirectory + "\\" + $g_ini_filename;
 
+
+////////////////////////////////////////////////////////////////////////////////
+//		定数
+////////////////////////////////////////////////////////////////////////////////
 //「関数・シンボル」コメントを探す最大行数
 #g_const_max_comment_lines=10;
 
@@ -60,16 +60,26 @@ $g_const_ini_priority_string[2]	= "upperdir";
 #g_const_ini_priority_string_num	= 3;
 
 
-//DengakuDLLをロードしたかどうか
+////////////////////////////////////////////////////////////////////////////////
+//		DengakuDLLをロードしたかどうか
+////////////////////////////////////////////////////////////////////////////////
 #g_load_dengaku = false;
 
+////////////////////////////////////////////////////////////////////////////////
+//		createobject("Scripting.FileSystemObject");
+////////////////////////////////////////////////////////////////////////////////
+#g_fso=0;
 
-//ParseCtagsLine関数の返値。
+////////////////////////////////////////////////////////////////////////////////
+//		ParseCtagsLine関数の返値。
+////////////////////////////////////////////////////////////////////////////////
 $g_ParseCtagsLineResult_Filename	= "";	//ファイル名
 $g_ParseCtagsLineResult_Regex		= "";	//正規表現
 
-/*ctagsファイルをパースした結果を格納する配列。
-・正規表現式、又は、行番号
+////////////////////////////////////////////////////////////////////////////////
+//		ctagsファイルをパースした結果を格納する配列。
+////////////////////////////////////////////////////////////////////////////////
+/*・正規表現式、又は、行番号
 	$Regexs[0...#g_NumTags]
 
 ・ファイル名
@@ -87,14 +97,17 @@ $g_Filenames	= "";
 #g_const_TagModeRegex	=1;
 
 
-/*コメント
-$Comments[0...N]
+////////////////////////////////////////////////////////////////////////////////
+//		コメント
+////////////////////////////////////////////////////////////////////////////////
+/*$Comments[0...N]
 */
 $g_Comments = "";	//定義位置の前後にあるコメントを格納した配列
 #g_NumComments=0;
 
-/*	(.ini)ファイルの情報
-*/
+////////////////////////////////////////////////////////////////////////////////
+//		(.ini)ファイルの情報
+////////////////////////////////////////////////////////////////////////////////
 $g_ini_tags			= "tags";
 
 $g_ini_path			= "";
@@ -103,7 +116,18 @@ $g_ini_path			= "";
 $g_ini_priority		= "";
 #g_ini_priority_num	= 0;
 
+////////////////////////////////////////////////////////////////////////////////
+//		解析済みtagsファイル
+////////////////////////////////////////////////////////////////////////////////
+$g_parsed_tags_filename="";
+#g_parsed_tags_filename_num=0;
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//		メイン処理
+////////////////////////////////////////////////////////////////////////////////
 
 call Main;
 endmacro;
@@ -119,14 +143,21 @@ Main:
 
 	call MainPost;
 	##ret =  ##return;
+	call ShowParsedTagsFilename;
 
 	setsearch $$old_searchbuffer, ##old_searchoption;
+	call FinalizeFOS;
 	call FreeDengakuDLL;
 	return ##ret;
 
 
 MainPost:
 	call CheckEnvironment;
+	if(! ##return){
+		return false;
+	}
+
+	call InitializeFOS;
 	if(! ##return){
 		return false;
 	}
@@ -153,7 +184,6 @@ MainPost:
 	##i=0;
 
 	while((##i < #g_ini_priority_num) && (! ##ret)){
-		$$tags_abs_filename = "";
 		$$priority = tolower($g_ini_priority[##i]);
 		if("current"==$$priority){
 			call MainPostDoCurrent $$text;
@@ -180,12 +210,15 @@ MainPost:
 MainPostDoCurrent:
 	$$text = $$1;
 	$$tags_abs_filename = directory+"\\"+$g_ini_tags;
-	if(existfile($$tags_abs_filename, 1)){
-		call GetTooltipString $$tags_abs_filename, $$text;
-		##ret =  ##return;
-		if(##ret){
-			//コメントを抜き出した
-			return true;
+	call CheckStoreParsedTagsFile $$tags_abs_filename;
+	if(! ##return){
+		if(existfile($$tags_abs_filename, 1)){
+			call GetTooltipString $$tags_abs_filename, $$text;
+			##ret =  ##return;
+			if(##ret){
+				//コメントを抜き出した
+				return true;
+			}
 		}
 	}
 	return false;
@@ -196,12 +229,15 @@ MainPostDoPath:
 	##i		= 0;
 	while(##i < #g_ini_path_num){
 		$$tags_abs_filename = $g_ini_path[##i]+"\\"+$g_ini_tags;
-		if(existfile($$tags_abs_filename, 1)){
-			call GetTooltipString $$tags_abs_filename, $$text;
-			##ret =  ##return;
-			if(##ret){
-				//コメントを抜き出した
-				return true;
+		call CheckStoreParsedTagsFile $$tags_abs_filename;
+		if(! ##return){
+			if(existfile($$tags_abs_filename, 1)){
+				call GetTooltipString $$tags_abs_filename, $$text;
+				##ret =  ##return;
+				if(##ret){
+					//コメントを抜き出した
+					return true;
+				}
 			}
 		}
 		##i = ##i + 1;
@@ -211,32 +247,28 @@ MainPostDoPath:
 
 MainPostDoUpperDir:
 	$$text 	= $$1;
-	##obj=createobject("Scripting.FileSystemObject");
-	if(0==##obj){
-		message("createobject(\"Scripting.FileSystemObject\"); に失敗");
-		return false;
-	}
 	##i=0;
 	##max=100;//無限ループ防止
 	$$current = directory;
 	while(##i<##max){
-		$$current = callmethod_returnstr(##obj,"GetParentFolderName", $$current);
+		$$current = callmethod_returnstr(#g_fso,"GetParentFolderName", $$current);
 		if(0==strlen($$current)){
 			break;
 		}
 		$$tags_abs_filename = $$current+"\\"+$g_ini_tags;
-		if(existfile($$tags_abs_filename, 1)){
-			call GetTooltipString $$tags_abs_filename, $$text;
-			##ret =  ##return;
-			if(##ret){
-				//コメントを抜き出した
-				releaseobject ##obj;
-				return true;
+		call CheckStoreParsedTagsFile $$tags_abs_filename;
+		if(! ##return){
+			if(existfile($$tags_abs_filename, 1)){
+				call GetTooltipString $$tags_abs_filename, $$text;
+				##ret =  ##return;
+				if(##ret){
+					//コメントを抜き出した
+					return true;
+				}
 			}
 		}
 		##i = ##i + 1;
 	}
-	releaseobject ##obj;
 	return false;
 
 
@@ -891,6 +923,66 @@ CheckIniPriorityString:
 			"間違っている値：" + $$arg + "\n"
 	);
 	return false;
+
+
+//解析済みのtagsファイルかどうか調べる。
+//未解析のtagsファイルなら、g_parsed_tags_filename へ格納される。
+//（メモ）同じtagsファイルを何度も解析しないようにする。
+CheckStoreParsedTagsFile:
+	$$file_name = $$1;
+
+	//ファイルパスを正規化する
+	#g_fso=createobject("Scripting.FileSystemObject");
+	$$file_name = callmethod_returnstr(#g_fso,"GetAbsolutePathName",$$file_name);
+	releaseobject #g_fso;
+
+	##i=0;
+	while(##i<#g_parsed_tags_filename_num){
+		if($$file_name == $g_parsed_tags_filename[##i]){
+			//解析済みのtagsファイル
+			return true;
+		}
+		##i = ##i + 1;
+	}
+	$g_parsed_tags_filename[##i]=$$file_name;
+	#g_parsed_tags_filename_num = #g_parsed_tags_filename_num + 1;
+	return false;
+
+
+//$g_parsed_tags_filename[] の中身を表示する。（デバッグ）
+ShowParsedTagsFilename:
+	##i=0;
+	$$msg="$g_parsed_tags_filename[]=\n";
+	while(##i<#g_parsed_tags_filename_num){
+		$$msg = $$msg + "  ＊" + $g_parsed_tags_filename[##i] + "\n";
+		##i = ##i + 1;
+	}
+	if(0){
+		message($$msg);
+	}else{
+		debuginfo 1;
+		debuginfo($$msg);
+	}
+	return ;
+
+
+InitializeFOS:
+	if(0==#g_fso){
+		#g_fso=createobject("Scripting.FileSystemObject");
+		if(0==#g_fso){
+			message("createobject(\"Scripting.FileSystemObject\"); に失敗");
+			return false;
+		}
+	}
+	return true;
+
+
+FinalizeFOS:
+	if(#g_fso){
+		releaseobject #g_fso;
+		#g_fso=0;
+	}
+	return ;
 
 
 LoadDengakuDLL:
