@@ -12,6 +12,11 @@ Visual Assist X の Hovering Tooltips っぽい秀丸マクロを途中まで書
 ## Perl
 ![perl](perl.gif "perl")
 
+# ゴール
+こんな感じのマクロを目指す。
+
+![Goal](hoverFromSource.gif "Goal")
+
 # 連絡先
 http://d.hatena.ne.jp/ohtorii/ <br>
 https://twitter.com/ohtorii <br>
