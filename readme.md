@@ -12,11 +12,7 @@ Visual Assist X の Hovering Tooltips っぽい秀丸マクロを途中まで書
 ## Perl
 ![perl](perl.gif "perl")
 
-# ゴール
-Visual Assist XのHovering Tooltipsを目指すプロジェクトです。
-http://www.wholetomato.com/products/features/hover.asp
-
-まだ、動かないです。
-
-# blog
-http://d.hatena.ne.jp/ohtorii/20120204/p1
+# 連絡先
+http://d.hatena.ne.jp/ohtorii/ <br>
+https://twitter.com/ohtorii <br>
+https://github.com/ohtorii/hidemaru_hovering_tooltips <br>
