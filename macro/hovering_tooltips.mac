@@ -1,59 +1,56 @@
-/*ƒVƒ“ƒ{ƒ‹‚ÌƒRƒƒ“ƒg‚ğ•\¦‚·‚éB
+ï»¿/*ã‚·ãƒ³ãƒœãƒ«ã®ã‚³ãƒ¡ãƒ³ãƒˆã‚’è¡¨ç¤ºã™ã‚‹ã€‚
 
-¡—pˆÓ‚·‚é‚à‚Ì
+â– ç”¨æ„ã™ã‚‹ã‚‚ã®
 	Exuberant Ctags
-	i–{‰Æj
+	ï¼ˆæœ¬å®¶ï¼‰
 	http://hp.vector.co.jp/authors/VA025040/ctags/
-	i“ú–{Œê”Åj
+	ï¼ˆæ—¥æœ¬èªç‰ˆï¼‰
 	http://ctags.sourceforge.net/
 
-	¦è•—‹Õì‚ÌCTagsJump009.lzh‚ª“±“üÏ‚İ‚È‚çAExuberant Ctags‚Í“±“üÏ‚İ‚Å‚·B
+	â€»æ‰‹é¢¨ç´æ°ä½œã®CTagsJump009.lzhãŒå°å…¥æ¸ˆã¿ãªã‚‰ã€Exuberant Ctagsã¯å°å…¥æ¸ˆã¿ã§ã™ã€‚
 
 
-¡‘O€”õ
-	ƒeƒLƒXƒg’†‚ÌuƒRƒƒ“ƒgE•¶š—ñv‚ÍGŠÛƒGƒfƒBƒ^‚©‚çæ“¾‚µ‚Ä‚¢‚Ü‚·B
-	GŠÛƒGƒfƒBƒ^‚Ìİ’è‚ğ‚«‚¿‚ñ‚Æs‚Á‚Ä‚¨‚¢‚Ä‚­‚¾‚³‚¢B
+â– å‰æº–å‚™
+	ãƒ†ã‚­ã‚¹ãƒˆä¸­ã®ã€Œã‚³ãƒ¡ãƒ³ãƒˆãƒ»æ–‡å­—åˆ—ã€ã¯ç§€ä¸¸ã‚¨ãƒ‡ã‚£ã‚¿ã‹ã‚‰å–å¾—ã—ã¦ã„ã¾ã™ã€‚
+	ç§€ä¸¸ã‚¨ãƒ‡ã‚£ã‚¿ã®è¨­å®šã‚’ãã¡ã‚“ã¨è¡Œã£ã¦ãŠã„ã¦ãã ã•ã„ã€‚
 
-	ˆÈ‰ºè‡A
-	–ƒƒjƒ…[ ¨ ‚»‚Ì‘¼ ¨ ƒtƒ@ƒCƒ‹ƒ^ƒCƒv•Ê‚Ìİ’è ¨ •¡”sƒRƒƒ“ƒg
-		Œ¾Œê–ˆ‚Éİ’è‚µ‚Ä‚­‚¾‚³‚¢Bi‘½•ªA‚±‚±‚ÍŠF‚³‚ñ‘åä•v‚¾‚Æv‚¢‚Ü‚·j
+	ä»¥ä¸‹æ‰‹é †ã€
+	ï¼Šãƒ¡ãƒ‹ãƒ¥ãƒ¼ â†’ ãã®ä»– â†’ ãƒ•ã‚¡ã‚¤ãƒ«ã‚¿ã‚¤ãƒ—åˆ¥ã®è¨­å®š â†’ è¤‡æ•°è¡Œã‚³ãƒ¡ãƒ³ãƒˆ
+		è¨€èªæ¯ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚ï¼ˆå¤šåˆ†ã€ã“ã“ã¯çš†ã•ã‚“å¤§ä¸ˆå¤«ã ã¨æ€ã„ã¾ã™ï¼‰
 
-	–ƒƒjƒ…[ ¨ ‚»‚Ì‘¼ ¨ ƒtƒ@ƒCƒ‹ƒ^ƒCƒv•Ê‚Ìİ’è ¨ ‹­’²•\¦
-		uƒRƒƒ“ƒgE•¶š—ñv‚ğ“Æ©‚É’è‹`‚µ‚Ä‚¢‚éê‡‚Ííœ‚µ‚ÄAGŠÛƒGƒfƒBƒ^‘¤‚É”C‚¹‚é‚æ‚¤‚É‚µ‚Ä‚­‚¾‚³‚¢B
+	ï¼Šãƒ¡ãƒ‹ãƒ¥ãƒ¼ â†’ ãã®ä»– â†’ ãƒ•ã‚¡ã‚¤ãƒ«ã‚¿ã‚¤ãƒ—åˆ¥ã®è¨­å®š â†’ å¼·èª¿è¡¨ç¤º
+		ã€Œã‚³ãƒ¡ãƒ³ãƒˆãƒ»æ–‡å­—åˆ—ã€ã‚’ç‹¬è‡ªã«å®šç¾©ã—ã¦ã„ã‚‹å ´åˆã¯å‰Šé™¤ã—ã¦ã€ç§€ä¸¸ã‚¨ãƒ‡ã‚£ã‚¿å´ã«ä»»ã›ã‚‹ã‚ˆã†ã«ã—ã¦ãã ã•ã„ã€‚
 
-	i“±“ü‚Ì•~‹‚Í‚¿‚å‚Á‚Æ‚¾‚¯‚‚¢‚Å‚·AƒXƒCƒ}ƒZƒ“j
+	ï¼ˆå°å…¥ã®æ•·å±…ã¯ã¡ã‚‡ã£ã¨ã ã‘é«˜ã„ã§ã™ã€ã‚¹ã‚¤ãƒã‚»ãƒ³ï¼‰
 */
 
 ////////////////////////////////////////////////////////////////////////////////
-//		exe/dll/ini ‚ÌƒpƒXİ’è
+//		exe/dll/ini ã®ãƒ‘ã‚¹è¨­å®š
 ////////////////////////////////////////////////////////////////////////////////
 $g_ctag_search_filename = "ctags_search.exe";
 $g_ctag_search_abs_path = currentmacrodirectory + "\\" + $g_ctag_search_filename;
-
-$g_dengaku_filename = "DengakuDLL.dll";
-$g_dengaku_abs_path =  hidemarudir + "\\" + $g_dengaku_filename;
 
 $g_ini_filename 	= "hovering_tooltips_config.ini";
 $g_ini_abs_path 	= currentmacrodirectory + "\\" + $g_ini_filename;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//		’è”
+//		å®šæ•°
 ////////////////////////////////////////////////////////////////////////////////
-//uŠÖ”EƒVƒ“ƒ{ƒ‹vƒRƒƒ“ƒg‚ğ’T‚·Å‘ås”
+//ã€Œé–¢æ•°ãƒ»ã‚·ãƒ³ãƒœãƒ«ã€ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ¢ã™æœ€å¤§è¡Œæ•°
 #g_const_max_comment_lines=10;
 
-//tags‚ÌÅ‘ås”
+//tagsã®æœ€å¤§è¡Œæ•°
 #g_const_max_tags_lines=10;
 
-//iniƒtƒ@ƒCƒ‹FPath‚ÌÅ‘å’li‘½•ª‘‚â‚µ‚Ä‚à‘åä•v‚È‚Í‚¸EEEj
+//iniãƒ•ã‚¡ã‚¤ãƒ«ï¼šPathã®æœ€å¤§å€¤ï¼ˆå¤šåˆ†å¢—ã‚„ã—ã¦ã‚‚å¤§ä¸ˆå¤«ãªã¯ãšãƒ»ãƒ»ãƒ»ï¼‰
 #g_const_ini_path_max = 10;
 
-//iniƒtƒ@ƒCƒ‹FPriority[0-3]i‚±‚±‚ÍA‚R‚ÅŒÅ’èj
+//iniãƒ•ã‚¡ã‚¤ãƒ«ï¼šPriority[0-3]ï¼ˆã“ã“ã¯ã€ï¼“ã§å›ºå®šï¼‰
 #g_const_ini_priority_max=3;
 
-//iniƒtƒ@ƒCƒ‹FPriority‚Öw’è‚·‚é•¶š—ñi¬•¶š‚Åw’è‚·‚é‚±‚Æj
-//memo:‚à‚µA‘Œ¸‚·‚é‚æ‚¤‚È‚±‚Æ‚ª‚ ‚ê‚ÎMainPostŠÖ”“à‚Ìˆ—‚à•ÏX‚·‚é‚±‚ÆB
+//iniãƒ•ã‚¡ã‚¤ãƒ«ï¼šPriorityã¸æŒ‡å®šã™ã‚‹æ–‡å­—åˆ—ï¼ˆå°æ–‡å­—ã§æŒ‡å®šã™ã‚‹ã“ã¨ï¼‰
+//memo:ã‚‚ã—ã€å¢—æ¸›ã™ã‚‹ã‚ˆã†ãªã“ã¨ãŒã‚ã‚Œã°MainPosté–¢æ•°å†…ã®å‡¦ç†ã‚‚å¤‰æ›´ã™ã‚‹ã“ã¨ã€‚
 $g_const_ini_priority_string[0]	= "current";
 $g_const_ini_priority_string[1]	= "path";
 $g_const_ini_priority_string[2]	= "upperdir";
@@ -61,31 +58,27 @@ $g_const_ini_priority_string[2]	= "upperdir";
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//		DengakuDLL‚ğƒ[ƒh‚µ‚½‚©‚Ç‚¤‚©
+//		DLLã‚’ãƒ­ãƒ¼ãƒ‰ã—ãŸã‹ã©ã†ã‹
 ////////////////////////////////////////////////////////////////////////////////
-#g_load_dengaku = false;
+#g_hmjre_dll=0;
+#g_hmoutputpane_dll=0;
 
 ////////////////////////////////////////////////////////////////////////////////
-//		createobject("Scripting.FileSystemObject");
+//		ParseCtagsLineé–¢æ•°ã®è¿”å€¤ã€‚
 ////////////////////////////////////////////////////////////////////////////////
-#g_fso=0;
+$g_ParseCtagsLineResult_Filename	= "";	//ãƒ•ã‚¡ã‚¤ãƒ«å
+$g_ParseCtagsLineResult_Regex		= "";	//æ­£è¦è¡¨ç¾
 
 ////////////////////////////////////////////////////////////////////////////////
-//		ParseCtagsLineŠÖ”‚Ì•Ô’lB
+//		ctagsãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‘ãƒ¼ã‚¹ã—ãŸçµæœã‚’æ ¼ç´ã™ã‚‹é…åˆ—ã€‚
 ////////////////////////////////////////////////////////////////////////////////
-$g_ParseCtagsLineResult_Filename	= "";	//ƒtƒ@ƒCƒ‹–¼
-$g_ParseCtagsLineResult_Regex		= "";	//³‹K•\Œ»
-
-////////////////////////////////////////////////////////////////////////////////
-//		ctagsƒtƒ@ƒCƒ‹‚ğƒp[ƒX‚µ‚½Œ‹‰Ê‚ğŠi”[‚·‚é”z—ñB
-////////////////////////////////////////////////////////////////////////////////
-/*E³‹K•\Œ»®A–”‚ÍAs”Ô†
+/*ãƒ»æ­£è¦è¡¨ç¾å¼ã€åˆã¯ã€è¡Œç•ªå·
 	$Regexs[0...#g_NumTags]
 
-Eƒtƒ@ƒCƒ‹–¼
+ãƒ»ãƒ•ã‚¡ã‚¤ãƒ«å
 	$Filenames[0...#g_NumTags]
 
-E”²‚«o‚µ‚½tags‚ªus”Ô†(#g_const_TagModeLineNo)A³‹K•\Œ»(#g_const_TagModeRegex)v‚Ì‚Ç‚¿‚ç‚È‚Ì‚©B
+ãƒ»æŠœãå‡ºã—ãŸtagsãŒã€Œè¡Œç•ªå·(#g_const_TagModeLineNo)ã€æ­£è¦è¡¨ç¾(#g_const_TagModeRegex)ã€ã®ã©ã¡ã‚‰ãªã®ã‹ã€‚
 	#g_TagMode[0...#g_NumTags]
 */
 $g_Regexs		= "";
@@ -98,15 +91,15 @@ $g_Filenames	= "";
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//		ƒRƒƒ“ƒg
+//		ã‚³ãƒ¡ãƒ³ãƒˆ
 ////////////////////////////////////////////////////////////////////////////////
 /*$Comments[0...N]
 */
-$g_Comments = "";	//’è‹`ˆÊ’u‚Ì‘OŒã‚É‚ ‚éƒRƒƒ“ƒg‚ğŠi”[‚µ‚½”z—ñ
+$g_Comments = "";	//å®šç¾©ä½ç½®ã®å‰å¾Œã«ã‚ã‚‹ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ ¼ç´ã—ãŸé…åˆ—
 #g_NumComments=0;
 
 ////////////////////////////////////////////////////////////////////////////////
-//		(.ini)ƒtƒ@ƒCƒ‹‚Ìî•ñ
+//		(.ini)ãƒ•ã‚¡ã‚¤ãƒ«ã®æƒ…å ±
 ////////////////////////////////////////////////////////////////////////////////
 $g_ini_tags			= "tags";
 
@@ -117,7 +110,7 @@ $g_ini_priority		= "";
 #g_ini_priority_num	= 0;
 
 ////////////////////////////////////////////////////////////////////////////////
-//		‰ğÍÏ‚İtagsƒtƒ@ƒCƒ‹
+//		è§£ææ¸ˆã¿tagsãƒ•ã‚¡ã‚¤ãƒ«
 ////////////////////////////////////////////////////////////////////////////////
 $g_parsed_tags_filename="";
 #g_parsed_tags_filename_num=0;
@@ -126,9 +119,9 @@ $g_parsed_tags_filename="";
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//		ƒƒCƒ“ˆ—
+//		ãƒ¡ã‚¤ãƒ³å‡¦ç†
 ////////////////////////////////////////////////////////////////////////////////
-
+debuginfo 1;
 call Main;
 endmacro;
 
@@ -146,18 +139,11 @@ Main:
 	call ShowParsedTagsFilename;
 
 	setsearch $$old_searchbuffer, ##old_searchoption;
-	call FinalizeFOS;
-	call FreeDengakuDLL;
 	return ##ret;
 
 
 MainPost:
 	call CheckEnvironment;
-	if(! ##return){
-		return false;
-	}
-
-	call InitializeFOS;
 	if(! ##return){
 		return false;
 	}
@@ -174,11 +160,16 @@ MainPost:
 		return false;
 	}
 
-	title "ƒ}ƒNƒˆ—’†";
+	title "ãƒã‚¯ãƒ­å‡¦ç†ä¸­";
 
 	##old_hidemaru = hidemaruhandle(0);
 	openfile "/h ";
 	##new_hidemaru = hidemaruhandle(0);
+
+	call LoadDLL;
+	if(! ##return){
+		return false;
+	}
 
 	##ret=false;
 	##i=0;
@@ -199,6 +190,7 @@ MainPost:
 		}
 		##i = ##i + 1;
 	}
+	call FreeDLL;
 
 	setactivehidemaru	##old_hidemaru;
 	closehidemaruforced ##new_hidemaru;
@@ -210,18 +202,16 @@ MainPost:
 MainPostDoCurrent:
 	$$text = $$1;
 	$$tags_abs_filename = directory+"\\"+$g_ini_tags;
-	call CheckStoreParsedTagsFile $$tags_abs_filename;
-	if(! ##return){
-		if(existfile($$tags_abs_filename, 1)){
-			call GetTooltipString $$tags_abs_filename, $$text;
-			##ret =  ##return;
-			if(##ret){
-				//ƒRƒƒ“ƒg‚ğ”²‚«o‚µ‚½
-				return true;
-			}
-		}
+	if(!existfile($$tags_abs_filename, 1)){
+		return false;
 	}
-	return false;
+	call CheckStoreParsedTagsFile $$tags_abs_filename;
+	if(##return){
+		return false;
+	}
+	call GetTooltipString $$tags_abs_filename, $$text;
+	return ##return;
+
 
 
 MainPostDoPath:
@@ -229,13 +219,13 @@ MainPostDoPath:
 	##i		= 0;
 	while(##i < #g_ini_path_num){
 		$$tags_abs_filename = $g_ini_path[##i]+"\\"+$g_ini_tags;
-		call CheckStoreParsedTagsFile $$tags_abs_filename;
-		if(! ##return){
-			if(existfile($$tags_abs_filename, 1)){
+		if(existfile($$tags_abs_filename, 1)){
+			call CheckStoreParsedTagsFile $$tags_abs_filename;
+			if(! ##return){
 				call GetTooltipString $$tags_abs_filename, $$text;
 				##ret =  ##return;
 				if(##ret){
-					//ƒRƒƒ“ƒg‚ğ”²‚«o‚µ‚½
+					//ã‚³ãƒ¡ãƒ³ãƒˆã‚’æŠœãå‡ºã—ãŸ
 					return true;
 				}
 			}
@@ -246,23 +236,26 @@ MainPostDoPath:
 
 
 MainPostDoUpperDir:
+	debuginfo "MainPostDoUpperDir";
 	$$text 	= $$1;
 	##i=0;
-	##max=100;//–³ŒÀƒ‹[ƒv–h~
+	##max=100;//ç„¡é™ãƒ«ãƒ¼ãƒ—é˜²æ­¢
 	$$current = directory;
 	while(##i<##max){
-		$$current = callmethod_returnstr(#g_fso,"GetParentFolderName", $$current);
+		call GetParentFolderName $$current;
+		$$current=$$return;
 		if(0==strlen($$current)){
 			break;
 		}
 		$$tags_abs_filename = $$current+"\\"+$g_ini_tags;
-		call CheckStoreParsedTagsFile $$tags_abs_filename;
-		if(! ##return){
-			if(existfile($$tags_abs_filename, 1)){
+		debuginfo "$$tags_abs_filename="+$$tags_abs_filename;
+		if(existfile($$tags_abs_filename, 1)){
+			call CheckStoreParsedTagsFile $$tags_abs_filename;
+			if(! ##return){
 				call GetTooltipString $$tags_abs_filename, $$text;
 				##ret =  ##return;
 				if(##ret){
-					//ƒRƒƒ“ƒg‚ğ”²‚«o‚µ‚½
+					//ã‚³ãƒ¡ãƒ³ãƒˆã‚’æŠœãå‡ºã—ãŸ
 					return true;
 				}
 			}
@@ -291,7 +284,7 @@ GetSearchText:
 	}
 	return  $$text;
 
-//ctags_search.exe ‚ğ‹N“®‚µ‚Äctags‚ÌƒVƒ“ƒ{ƒ‹‚ğæ“¾‚·‚éB
+//ctags_search.exe ã‚’èµ·å‹•ã—ã¦ctagsã®ã‚·ãƒ³ãƒœãƒ«ã‚’å–å¾—ã™ã‚‹ã€‚
 RunCtagsSearch:
 	$$tags_abs_filename=$$1;
 	$$text= $$2;
@@ -310,131 +303,114 @@ RunCtagsSearch:
 			;
 	##ret	= result;
 	if(! ##ret){
-		message("runex‚Å¸”s");
+		message("runexã§å¤±æ•—");
 		return false;
 	}
 	##retex = getresultex(9);
 	if(0 != ##retex){
-		message($g_ctag_search_filename + "  ‚ÌƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ö‚Ì•Ô’l‚ª¸”s‚Å‚µ‚½B\n");
+		message($g_ctag_search_filename + "  ã®ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã¸ã®è¿”å€¤ãŒå¤±æ•—ã§ã—ãŸã€‚\n");
 		return false;
 	}
 	return true;
 
 
-/* tagsƒtƒ@ƒCƒ‹‚©‚çdefine‚ğ”²‚«o‚·B
-
-(Ex.)
-MY_DEFINE	.\include\foo.h	118;"	d
-*/
-ParseCtagsLineDefine:
-	$$text = $$1;
-	$$sep  = "\t";
-
-	//ƒVƒ“ƒ{ƒ‹–¼
-	$token = dllfuncstr("GETTOKEN",$$text,$$sep);
-	if (dllfunc("HASMORETOKENS") == 0) {
-		return false;
-	}
-
-	//ƒtƒ@ƒCƒ‹–¼
-	$g_ParseCtagsLineResult_Filename = dllfuncstr("GETTOKEN","",$$sep);
-	if (dllfunc("HASMORETOKENS") == 0) {
-		return false;
-	}
-
-	//³‹K•\Œ»
-	$g_ParseCtagsLineResult_Regex = dllfuncstr("GETTOKEN","",$$sep);
-	if (dllfunc("HASMORETOKENS") == 0) {
-		return false;
-	}
-	return true;
-
-/*tagsƒtƒ@ƒCƒ‹‚©‚ç³‹K•\Œ»‚ğ”²‚«o‚·
+/*tagsãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰æ­£è¦è¡¨ç¾ã‚’æŠœãå‡ºã™
 */
 ParseCtagsLineReg:
 	$$text = $$1;
 	$$sep  = "\t";
 	##offset = 0;
 
-	//ƒVƒ“ƒ{ƒ‹–¼‚Ì––”ö
+	//ã‚·ãƒ³ãƒœãƒ«åã®æœ«å°¾
 	##tail_sym = strstr($$text,$$sep,##offset);
 	if(-1 == ##tail_sym){
 		return false;
 	}
 	##offset=##tail_sym+1;
 
-	//ƒtƒ@ƒCƒ‹–¼‚Ì––”ö
+	//ãƒ•ã‚¡ã‚¤ãƒ«åã®æœ«å°¾
 	##tail_file = strstr($$text,$$sep,##offset);
 	if(-1 == ##tail_file){
 		return false;
 	}
 	##offset=##tail_file+1;
 
-	//³‹K•\Œ»‚Ì––”ö
+	//æ­£è¦è¡¨ç¾ã®æœ«å°¾
 	##tail_reg = strrstr($$text,"/;\"");
 	if(-1 == ##tail_reg){
 		return false;
 	}
 
 	$g_ParseCtagsLineResult_Filename= midstr($$text, ##tail_sym+1, (##tail_file-1) -  (##tail_sym+1) + 1);
-	//+3 ‚Í /;" ‚Ì’·‚³
+	//+3 ã¯ /;" ã®é•·ã•
 	$g_ParseCtagsLineResult_Regex 	= midstr($$text, ##tail_file+1, (##tail_reg-1) -  (##tail_file+1) + 1 + 3);
 	return true;
 
+
 ParseCtagsLine:
+	debuginfo "ParseCtagsLine";
 	$$text = $$1;
 	$g_ParseCtagsLineResult_Filename	= "";
 	$g_ParseCtagsLineResult_Regex		= "";
-
-	$$tail = rightstr(dllfuncstr("RTRIM",$$text),2);
-	if("\td" == $$tail){
-		call ParseCtagsLineDefine $$text;
-	}else{
-		call ParseCtagsLineReg $$text;
-	}
-
+	debuginfo "$$text="+$$text;
+	call ParseCtagsLineReg $$text;
 	return ##return;
 
 
-/*Perl‚Ì³‹K•\Œ»‚ğGŠÛ‚Ì³‹K•\Œ»‚Ö•ÏŠ·
+/*Perlã®æ­£è¦è¡¨ç¾(?)ã‚’ç§€ä¸¸ã®æ­£è¦è¡¨ç¾ã¸å¤‰æ›
 
-iƒƒ‚j
-‚®‚È‚±‚Æ‚Í‚µ‚Ä‚¢‚Ü‚¹‚ñA³‹K•\Œ»•¶š—ñ‚Ì‘OŒã‚ğí‚Á‚Ä‚¢‚é‚¾‚¯‚Å‚·B
+ï¼ˆãƒ¡ãƒ¢ï¼‰
+é«˜å°šãªã“ã¨ã¯ã—ã¦ã„ã¾ã›ã‚“ã€æ­£è¦è¡¨ç¾æ–‡å­—åˆ—ã®å‰å¾Œã‚’å‰Šã£ã¦ã„ã‚‹ã ã‘ã§ã™ã€‚
 
-i—áj
-“ü—Í
-	/^	struct SystemZRRIAddressMode {$/;"
-
-o—Í
-	  struct SystemZRRIAddressMode {
-
+ï¼ˆä¾‹ï¼‰
+å…¥åŠ›	/^#define GPR_ASSERT(/;"
+å‡ºåŠ›	#define GPR_ASSERT(
 */
 PerlRegToHidemaruReg:
 	$$text = $$1;
 	##len = strlen($$text);
-	//æ“ª‚Ì /^ ‚ğíœB
-	$$text=dllfuncstr("BRE_SUBST", "s/^\\/\\^//g", $$text);
-	//––”ö‚Ì $/;" ‚ğíœB
-	$$text=dllfuncstr("BRE_SUBST", "s/\\$\\/;\\\"$//g", $$text);
+
+	if(false){
+		// /^ -> ^
+		$$text=dllfuncstr(#g_hmjre_dll,"ReplaceRegular", R"(/^)", $$text,0,R"(^)",2);
+	}else{
+		//å…ˆé ­ã® /^ ã‚’å‰Šé™¤ã€‚
+		call StartsWith $$text, "/^";
+		if(##return){
+			$$text=midstr($$text,2);
+		}
+	}
+
+	//æœ«å°¾ã® $/;" ã¾ãŸã¯ /;"  ã‚’å‰Šé™¤ã€‚
+	call EndsWith $$text, R"($/;")";
+	if(##return){
+		$$text=leftstr($$text,strlen($$text)-4);
+	}else{
+		call EndsWith $$text, R"(/;")";
+		if(##return){
+			$$text=leftstr($$text,strlen($$text)-3);
+		}
+	}
+
 	//\\ -> \
-	$$text=dllfuncstr("BRE_SUBST", "s/\\\\\\\\/\\\\/g", $$text);
+	$$text=dllfuncstr(#g_hmjre_dll,"ReplaceRegular", R"(\\)", $$text,0,R"(\)",2);
+
 	//\/ -> /
-	$$text=dllfuncstr("BRE_SUBST", "s/\\\\\\//\\//g", $$text);
+	$$text=dllfuncstr(#g_hmjre_dll,"ReplaceRegular", R"(\/)", $$text,0,R"(/)",2);
 	return $$text;
 
 
 PerlRegToLineNo:
-	$$text = $$1;
-	//––”ö‚Ì ;" ‚ğíœB
-	return dllfuncstr("BRE_SUBST", "s/;\\\"//g", $$text);
+	//æœ«å°¾ã® ;" ã‚’å‰Šé™¤ã€‚
+	return dllfuncstr(#g_hmjre_dll,"ReplaceRegular", R"(;")", $$1,0,"",2);
 
 
-/*ˆÈ‰º‚Ì‚Ç‚Ìƒpƒ^[ƒ“‚È‚Ì‚©’²‚×‚é
-	s”Ô†	F44;"
-	³‹K•\Œ»F/^char r8[5] = "5char";$/;"
+/*ä»¥ä¸‹ã®ã©ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ãªã®ã‹èª¿ã¹ã‚‹
+	è¡Œç•ªå·	ï¼š44;"
+	æ­£è¦è¡¨ç¾ï¼š/^char r8[5] = "5char";$/;"
 
-•Ô’lF	0 s”Ô†
-		1 ³‹K•\Œ»
+è¿”å€¤ï¼š	0 è¡Œç•ªå·
+		1 æ­£è¦è¡¨ç¾
 */
 IsRegString:
 	if("/^" == leftstr($$1, 2)){
@@ -443,11 +419,12 @@ IsRegString:
 	return 0;
 
 ParseAllLine:
+	debuginfo "ParseAllLine";
 	##count 	= 0;
-	##max_loop 	= #g_const_max_tags_lines;//Å‘åƒ‹[ƒv‰ñ”i–³ŒÀƒ‹[ƒv–h~j
+	##max_loop 	= #g_const_max_tags_lines;//æœ€å¤§ãƒ«ãƒ¼ãƒ—å›æ•°ï¼ˆç„¡é™ãƒ«ãƒ¼ãƒ—é˜²æ­¢ï¼‰
 	##down_ret 	= true;
 	#g_NumTags	= 0;
-	//ˆês‚¸‚Âƒp[ƒX‚·‚é
+	//ä¸€è¡Œãšã¤ãƒ‘ãƒ¼ã‚¹ã™ã‚‹
 	while((##count<##max_loop) && ##down_ret){
 		if(0==linelen2){
 			break;
@@ -455,6 +432,7 @@ ParseAllLine:
 
 		selectline;
 		$$textline = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
+		debuginfo "$$textline="+$$textline;
 		call ParseCtagsLine $$textline;
 		if(! ##return){
 			return false;
@@ -467,17 +445,36 @@ ParseAllLine:
 		}else{
 			call PerlRegToHidemaruReg $g_ParseCtagsLineResult_Regex;
 		}
-		//tagsƒtƒ@ƒCƒ‹‚©‚ç”²‚«o‚µ‚½î•ñ‚ğ•Û‘¶‚µ‚Ä‚¨‚­
+		//tagsãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰æŠœãå‡ºã—ãŸæƒ…å ±ã‚’ä¿å­˜ã—ã¦ãŠã
 		$g_Regexs[#g_NumTags]		= $$return;
-		//$$aaa=$$aaa+ $$return + "\n";
 		$g_Filenames[#g_NumTags]	= $g_ParseCtagsLineResult_Filename;
+
+		debuginfo "(before)"+$g_ParseCtagsLineResult_Regex;
+		debuginfo "(after )"+$g_Regexs[#g_NumTags];
+
 		#g_NumTags = #g_NumTags + 1;
 
 		##count=##count+1;
 		down;
 		##down_ret=result;
 	}
+	call ParseAllLineDump;
 	return true;
+
+
+/*ParseAllLineãƒ©ãƒ™ãƒ«ã®çµæœã‚’è¡¨ç¤ºã™ã‚‹
+*/
+ParseAllLineDump:
+	debuginfo sprintf("==== ParseAllLineDump (Num=%d) ====", #g_NumTags);
+	##i=0;
+	while(##i < #g_NumTags){
+		debuginfo sprintf("[%d] Filename=%s", ##i,$g_Filenames[##i]);
+		debuginfo sprintf("     Regex   =%s",     $g_Regexs[##i]);
+
+		##i = ##i + 1;
+	}
+
+	return ;
 
 
 SearchRightWord:
@@ -488,7 +485,7 @@ SearchRightWord:
 		##ret=result;
 		while(##ret && (##prev_lineno==lineno)){
 			if(##color_code == (0x0000001f & colorcode[2])){
-				//ƒRƒƒ“ƒgs‚Å‚ ‚é
+				//ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã§ã‚ã‚‹
 				return true;
 			}
 			right;
@@ -499,42 +496,42 @@ SearchRightWord:
 	return false;
 
 
-/*‘O•û‚Ìs‚©‚çƒRƒƒ“ƒg‚ğ’T‚·
+/*å‰æ–¹ã®è¡Œã‹ã‚‰ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ¢ã™
 
-ƒRƒƒ“ƒg‚ª‚ ‚ê‚Î”ÍˆÍ‘I‘ğ‚·‚éB
+ã‚³ãƒ¡ãƒ³ãƒˆãŒã‚ã‚Œã°ç¯„å›²é¸æŠã™ã‚‹ã€‚
 */
 ExtractCommentSingleFront:
-	/*æ“ª•ûŒü‚Ì‹ó”’(\t\n )‚ğ“Ç‚İ”ò‚Î‚·
+	/*å…ˆé ­æ–¹å‘ã®ç©ºç™½(\t\n )ã‚’èª­ã¿é£›ã°ã™
 
-	iƒƒ‚j
-		#ƒRƒƒ“ƒg ‚Ps–Ú
-		#ƒRƒƒ“ƒg ‚Qs–Ú
+	ï¼ˆãƒ¡ãƒ¢ï¼‰
+		#ã‚³ãƒ¡ãƒ³ãƒˆ ï¼‘è¡Œç›®
+		#ã‚³ãƒ¡ãƒ³ãƒˆ ï¼’è¡Œç›®
 
-		ƒƒ‚±‚Ìs‚É‹ó”’‚ª‚ ‚ê‚Î“Ç‚İ”ò‚Î‚·„„
+		ï¼œï¼œã“ã®è¡Œã«ç©ºç™½ãŒã‚ã‚Œã°èª­ã¿é£›ã°ã™ï¼ï¼
 
 		int my_function(arg1, arg2) {
 	*/
 	##color_code = ##1;
 	searchup "[^ \\t\\n]",regular ;
 
-	##old_column=column+1;	//{‚P‚µ‚Äƒqƒbƒg‚µ‚½•¶š‚ª”ÍˆÍ‘I‘ğiŒã”¼‚Åˆ—‚·‚éj‚ÉŠÜ‚Ü‚ê‚é‚æ‚¤‚É‚µ‚Ä‚¨‚­B
+	##old_column=column+1;	//ï¼‹ï¼‘ã—ã¦ãƒ’ãƒƒãƒˆã—ãŸæ–‡å­—ãŒç¯„å›²é¸æŠï¼ˆå¾ŒåŠã§å‡¦ç†ã™ã‚‹ï¼‰ã«å«ã¾ã‚Œã‚‹ã‚ˆã†ã«ã—ã¦ãŠãã€‚
 	##old_lineno=lineno;
 	golinetop2;
 	##cur_lineno = lineno;
 
 	##has_comment=false;
-	//æ“ª‚ÉŒü‚©‚Á‚Ä’T‚·
+	//å…ˆé ­ã«å‘ã‹ã£ã¦æ¢ã™
 	##max_loop	= #g_const_max_comment_lines;
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
 		if(##color_code != (0x0000001f & colorcode[2])){
-			/*ƒRƒƒ“ƒgˆÈŠO‚ªŒ»‚ê‚½
+			/*ã‚³ãƒ¡ãƒ³ãƒˆä»¥å¤–ãŒç¾ã‚ŒãŸ
 
-			ƒRƒƒ“ƒgæ“ª‚Ì‹ó”’•¶š‚ğ“Ç‚İ”ò‚Î‚µ‚ÄAƒRƒƒ“ƒg‚©‚Ç‚¤‚©‚ğX‚É’²‚×‚éB
-			iˆÈ‰º‚Ì‚æ‚¤‚ÈƒRƒƒ“ƒg‚É‚È‚Á‚Ä‚¢‚éj
-				//ƒRƒƒ“ƒg‚P
-				//ƒRƒƒ“ƒg‚Q
+			ã‚³ãƒ¡ãƒ³ãƒˆå…ˆé ­ã®ç©ºç™½æ–‡å­—ã‚’èª­ã¿é£›ã°ã—ã¦ã€ã‚³ãƒ¡ãƒ³ãƒˆã‹ã©ã†ã‹ã‚’æ›´ã«èª¿ã¹ã‚‹ã€‚
+			ï¼ˆä»¥ä¸‹ã®ã‚ˆã†ãªã‚³ãƒ¡ãƒ³ãƒˆã«ãªã£ã¦ã„ã‚‹ï¼‰
+				//ã‚³ãƒ¡ãƒ³ãƒˆï¼‘
+				//ã‚³ãƒ¡ãƒ³ãƒˆï¼’
 			void function(zarg1,arg2){
 			*/
 			call SearchRightWord ##color_code;
@@ -544,7 +541,7 @@ ExtractCommentSingleFront:
 			golinetop2;
 		}
 
-		//ƒRƒƒ“ƒgs‚Å‚ ‚é
+		//ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã§ã‚ã‚‹
 		##has_comment=true;
 		##cur_lineno = lineno;
 		##cnt = ##cnt + 1;
@@ -554,26 +551,26 @@ ExtractCommentSingleFront:
 
 LoopExitF_l:
 	if(##has_comment){
-		//ƒRƒƒ“ƒgs‚ ‚è
+		//ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã‚ã‚Š
 		call SelectRange ##old_column, ##old_lineno, 0, ##cur_lineno;
 	}
 	return ##has_comment;
 
 
-/*Œã•û‚Ìs‚©‚çƒRƒƒ“ƒg‚ğ’T‚·
+/*å¾Œæ–¹ã®è¡Œã‹ã‚‰ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ¢ã™
 
-ƒRƒƒ“ƒg‚ª‚ ‚ê‚Î”ÍˆÍ‘I‘ğ‚·‚éB
+ã‚³ãƒ¡ãƒ³ãƒˆãŒã‚ã‚Œã°ç¯„å›²é¸æŠã™ã‚‹ã€‚
 */
 ExtractCommentSingleBack:
-	/*Œã•û•ûŒü‚Ì‹ó”’(\t\n )‚ğ“Ç‚İ”ò‚Î‚·
+	/*å¾Œæ–¹æ–¹å‘ã®ç©ºç™½(\t\n )ã‚’èª­ã¿é£›ã°ã™
 
-	iƒƒ‚j
+	ï¼ˆãƒ¡ãƒ¢ï¼‰
 		int my_function(arg1, arg2) {
 
-		ƒƒ‚±‚Ìs‚É‹ó”’‚ª‚ ‚ê‚Î“Ç‚İ”ò‚Î‚·„„
+		ï¼œï¼œã“ã®è¡Œã«ç©ºç™½ãŒã‚ã‚Œã°èª­ã¿é£›ã°ã™ï¼ï¼
 
-		#ƒRƒƒ“ƒg ‚Ps–Ú
-		#ƒRƒƒ“ƒg ‚Qs–Ú
+		#ã‚³ãƒ¡ãƒ³ãƒˆ ï¼‘è¡Œç›®
+		#ã‚³ãƒ¡ãƒ³ãƒˆ ï¼’è¡Œç›®
 	*/
 	##color_code = ##1;
 	searchdown "[^ \\t\\n]",regular ;
@@ -585,19 +582,19 @@ ExtractCommentSingleBack:
 	##cur_column = 0;
 
 	##has_comment=false;
-	//Œã•û‚ÉŒü‚©‚Á‚Ä’T‚·
+	//å¾Œæ–¹ã«å‘ã‹ã£ã¦æ¢ã™
 	##max_loop	= #g_const_max_comment_lines;
 	##cnt		= 0;
 	##ret 		= true;
 	while((##cnt < ##max_loop) && ##ret){
 		if(##color_code != (0x0000001f & colorcode[2])){
-			/*ƒRƒƒ“ƒgˆÈŠO‚ªŒ»‚ê‚½
+			/*ã‚³ãƒ¡ãƒ³ãƒˆä»¥å¤–ãŒç¾ã‚ŒãŸ
 
-			ƒRƒƒ“ƒgæ“ª‚Ì‹ó”’•¶š‚ğ“Ç‚İ”ò‚Î‚µ‚ÄAƒRƒƒ“ƒg‚©‚Ç‚¤‚©‚ğX‚É’²‚×‚éB
-			iˆÈ‰º‚Ì‚æ‚¤‚ÈƒRƒƒ“ƒg‚É‚È‚Á‚Ä‚¢‚éj
+			ã‚³ãƒ¡ãƒ³ãƒˆå…ˆé ­ã®ç©ºç™½æ–‡å­—ã‚’èª­ã¿é£›ã°ã—ã¦ã€ã‚³ãƒ¡ãƒ³ãƒˆã‹ã©ã†ã‹ã‚’æ›´ã«èª¿ã¹ã‚‹ã€‚
+			ï¼ˆä»¥ä¸‹ã®ã‚ˆã†ãªã‚³ãƒ¡ãƒ³ãƒˆã«ãªã£ã¦ã„ã‚‹ï¼‰
 			void function(zarg1,arg2){
-				//ƒRƒƒ“ƒg‚P
-				//ƒRƒƒ“ƒg‚Q
+				//ã‚³ãƒ¡ãƒ³ãƒˆï¼‘
+				//ã‚³ãƒ¡ãƒ³ãƒˆï¼’
 			*/
 			call SearchRightWord ##color_code;
 			if(! ##return){
@@ -606,7 +603,7 @@ ExtractCommentSingleBack:
 			golinetop2;
 		}
 
-		//ƒRƒƒ“ƒgs‚Å‚ ‚é
+		//ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã§ã‚ã‚‹
 		##has_comment=true;
 		##cur_lineno = lineno;
 		##cur_column = linelen2;
@@ -617,21 +614,21 @@ ExtractCommentSingleBack:
 
 LoopExitB_l:
 	if(##has_comment){
-		//ƒRƒƒ“ƒgs‚ ‚è
+		//ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã‚ã‚Š
 		call SelectRange ##old_column, ##old_lineno, ##cur_column, ##cur_lineno;
 	}
 	return ##has_comment;
 
 
 
-//‘OŒã‚ÌƒRƒƒ“ƒg‚ğ”²‚«o‚·
+//å‰å¾Œã®ã‚³ãƒ¡ãƒ³ãƒˆã‚’æŠœãå‡ºã™
 ExtractCommentSingle:
-	//uƒtƒ@ƒCƒ‹–¼{s”Ô†v
-	//ƒAƒEƒgƒvƒbƒg˜g‚Öo—Í‚µ‚½‚Æ‚«‚ÉƒWƒƒƒ“ƒv‚Å‚«‚é‚æ‚¤‚É‚µ‚Ä‚¨‚­B
+	//ã€Œãƒ•ã‚¡ã‚¤ãƒ«åï¼‹è¡Œç•ªå·ã€
+	//ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆæ ã¸å‡ºåŠ›ã—ãŸã¨ãã«ã‚¸ãƒ£ãƒ³ãƒ—ã§ãã‚‹ã‚ˆã†ã«ã—ã¦ãŠãã€‚
 	$$file_line = filename2 + "(" + str(lineno) + "):";
 
 	selectline;
-	//ŠÖ”‚Ìs‚ğ”²‚«o‚·B
+	//é–¢æ•°ã®è¡Œã‚’æŠœãå‡ºã™ã€‚
 	$$func_text = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno);
 	$$text_front="";
 	$$text_back ="";
@@ -642,31 +639,31 @@ ExtractCommentSingle:
 
 
 	//
-	//‘O•ûƒRƒƒ“ƒg
+	//å‰æ–¹ã‚³ãƒ¡ãƒ³ãƒˆ
 	//
 	call ExtractCommentSingleFront 0x00000003;
 	##has_comment =  ##return;
 	if(! ##has_comment){
-		//ƒRƒƒ“ƒg–³‚µA•¶š—ñ‚ğ’T‚·B
+		//ã‚³ãƒ¡ãƒ³ãƒˆç„¡ã—ã€æ–‡å­—åˆ—ã‚’æ¢ã™ã€‚
 		/*moveto2 ##old_column, ##old_lineno;
 		call ExtractCommentSingleFront 0x00000014;
 		##has_comment =  ##return;*/
 	}
 
 	if(##has_comment){
-		//ƒRƒƒ“ƒgs‚ ‚è
+		//ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã‚ã‚Š
 		$$text_front = gettext2(seltopcolumn,seltoplineno,selendcolumn,selendlineno) + "\x0d\x0a";
 	}
 
 	//
-	//Œã•ûƒRƒƒ“ƒg
+	//å¾Œæ–¹ã‚³ãƒ¡ãƒ³ãƒˆ
 	//
 	moveto2 ##old_column, ##old_lineno;
 	golineend2;
 	call ExtractCommentSingleBack 0x00000003;
 	##has_comment =  ##return;
 	if(! ##has_comment){
-		//ƒRƒƒ“ƒg–³‚µA•¶š—ñ‚ğ’T‚·B
+		//ã‚³ãƒ¡ãƒ³ãƒˆç„¡ã—ã€æ–‡å­—åˆ—ã‚’æ¢ã™ã€‚
 		/*moveto2 ##old_column, ##old_lineno;
 		golineend2;
 		call ExtractCommentSingleBack 0x00000014;
@@ -696,6 +693,7 @@ OpenFile:
 
 
 ExtractCommentAll:
+	debuginfo "ExtractCommentAll";
 	$$dir_name = $$1;
 	if(#g_NumTags){
 		setcompatiblemode 0x0050;
@@ -704,7 +702,7 @@ ExtractCommentAll:
 		$$prev_abs_filename = "";
 		while(##cnt < #g_NumTags){
 			$$reg = $g_Regexs[##cnt];
-			//memo: ‹ó”’•¶š‚Ì‚Æ‚«”ñ•\¦‚ÌŒŸõƒ_ƒCƒAƒƒO‚ª•\¦‚³‚êGŠÛƒGƒfƒBƒ^‚ªŒÅ‚Ü‚éB”O‚Ì‚½‚ß‰ñ”ğB
+			//memo: ç©ºç™½æ–‡å­—ã®ã¨ãéè¡¨ç¤ºã®æ¤œç´¢ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãŒè¡¨ç¤ºã•ã‚Œç§€ä¸¸ã‚¨ãƒ‡ã‚£ã‚¿ãŒå›ºã¾ã‚‹ã€‚å¿µã®ãŸã‚å›é¿ã€‚
 			if("" != $$reg){
 				$$abs_filename = $$dir_name + $g_Filenames[##cnt];
 				if($$prev_abs_filename != $$abs_filename){
@@ -738,7 +736,7 @@ ExtractCommentAll:
 	return false;
 
 
-//ƒfƒBƒŒƒNƒgƒŠ–¼‚ğæ“¾‚·‚é
+//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—ã™ã‚‹
 GetDirName:
 	$$filename = $$1;
 	##n1 = strrstr($$filename,"\\");
@@ -751,7 +749,7 @@ GetDirName:
 	if(-1 == ##pos){
 		return $$filename;
 	}
-	//+1‚µ‚Ä‹æØ‚è(\/)‚ğ‚ß‚é
+	//+1ã—ã¦åŒºåˆ‡ã‚Š(\/)ã‚’è¾¼ã‚ã‚‹
 	return leftstr($$filename,##pos+1);
 
 
@@ -765,7 +763,7 @@ MakeOutputComment:
 			##cnt = ##cnt + 1;
 		}
 	}else{
-		$$text = "ƒRƒƒ“ƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B";
+		$$text = "ã‚³ãƒ¡ãƒ³ãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚";
 	}
 	return $$text;
 
@@ -774,10 +772,12 @@ OutputComment:
 	call MakeOutputComment;
 	$$text = $$return;
 	if(1){
+		call LoadHmOutputPane;
 		call OpenOutput;
 		call ClearOutput;
 		##hdl = hidemaruhandle(0);
-		##ret=dllfunc("Output",##hdl,$$text);
+		##ret=dllfunc(#g_hmoutputpane_dll,"Output",##hdl,$$text);
+		call FreeHmOutputPane;
 	}else{
 		message($$text);
 	}
@@ -785,10 +785,11 @@ OutputComment:
 
 
 GetTooltipStringMain:
+	debuginfo "GetTooltipStringMain";
 	$$tags_abs_filename = $$1;
 	$$text				= $$2;
 
-	//•¡”‰ñŒÄ‚Î‚ê‚é‚±‚Æ‚ª‚ ‚é‚½‚ßcŠ[‚Ìíœ
+	//è¤‡æ•°å›å‘¼ã°ã‚Œã‚‹ã“ã¨ãŒã‚ã‚‹ãŸã‚æ®‹éª¸ã®å‰Šé™¤
 	selectall;
 	backspace;
 
@@ -796,33 +797,23 @@ GetTooltipStringMain:
 	if(! ##return){
 		return false;
 	}
-
 	//
-	//Œ»“_‚Å‚±‚Ì‚æ‚¤‚ÈƒeƒLƒXƒg‚ª“¾‚ç‚ê‚Ä‚¢‚éB
+	//ç¾æ™‚ç‚¹ã§ã“ã®ã‚ˆã†ãªãƒ†ã‚­ã‚¹ãƒˆãŒå¾—ã‚‰ã‚Œã¦ã„ã‚‹ã€‚
 	//
 	//Syntax	.\lib\MC\MCDisassembler\EDDisassembler.h	/^	  AssemblySyntax Syntax;$/;"    m   struct:llvm::EDDisassembler::CPUKey
 	//SyntaxCheckTest	.\utils\lit\lit\LitFormats.py	/^from TestFormats import SyntaxCheckTest, OneCommandPerFileTest$/;"    i
 	//
-
-	//ctags‚Ì‚Ps‚ğƒp[ƒX‚·‚é‚½‚ß‚Édengaku-dll‚ğg—p‚µ‚Ü‚·B
-	call LoadDengakuDLL;
-	if(! ##return){
-		return false;
-	}
 
 	gofiletop;
 	call ParseAllLine;
 	if(! ##return){
 		return false;
 	}
-
-	//RunCtagsSearch ‚Åæ“¾‚µ‚½ƒeƒLƒXƒg‚ğíœ‚·‚é
+	//RunCtagsSearch ã§å–å¾—ã—ãŸãƒ†ã‚­ã‚¹ãƒˆã‚’å‰Šé™¤ã™ã‚‹
 	selectall;
 	backspace;
-
 	call GetDirName $$tags_abs_filename;
 	$$dir_name = $$return;
-
 	call ExtractCommentAll $$dir_name;
 	if(! ##return){
 		return false;
@@ -847,22 +838,33 @@ SelectRange:
 	return ;
 
 
+LoadHmOutputPane:
+	if(#g_hmoutputpane_dll==0){
+		#g_hmoutputpane_dll=loaddll("HmOutputPane.dll");
+	}
+	return;
+
+FreeHmOutputPane:
+	if(#g_hmoutputpane_dll){
+		freedll #g_hmoutputpane_dll;
+		#g_hmoutputpane_dll=0;
+	}
+	return ;
+
 OpenOutput:
-	//ƒAƒEƒgƒvƒbƒg˜g‚ğŠJ‚­
-	loaddll "HmOutputPane.dll";
-	#h=dllfunc("GetWindowHandle",hidemaruhandle(0));
+	//ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆæ ã‚’é–‹ã
+	#h=dllfunc(#g_hmoutputpane_dll,"GetWindowHandle",hidemaruhandle(0));
 	#ret=sendmessage(#h,0x111/*WM_COMMAND*/,1103 ,0);
-	#ret=dllfunc("Push",hidemaruhandle(0));
-	#ret=dllfunc("Pop",hidemaruhandle(0));
+	#ret=dllfunc(#g_hmoutputpane_dll,"Push",hidemaruhandle(0));
+	#ret=dllfunc(#g_hmoutputpane_dll,"Pop",hidemaruhandle(0));
 	return ;
 
 
 ClearOutput:
-	loaddll "HmOutputPane.dll";
-	//ƒAƒEƒgƒvƒbƒg˜g‚ğŠJ‚­
-	#ret=dllfunc("Output",hidemaruhandle(0),"");
-	//ƒAƒEƒgƒvƒbƒg˜g‚ğƒNƒŠƒA
-	#h=dllfunc("GetWindowHandle",hidemaruhandle(0));
+	//ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆæ ã‚’é–‹ã
+	#ret=dllfunc(#g_hmoutputpane_dll,"Output",hidemaruhandle(0),"");
+	//ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆæ ã‚’ã‚¯ãƒªã‚¢
+	#h=dllfunc(#g_hmoutputpane_dll,"GetWindowHandle",hidemaruhandle(0));
 	#ret=sendmessage(#h,0x111/*WM_COMMAND*/,1009,0);
 	return ;
 
@@ -870,13 +872,13 @@ ClearOutput:
 ParseIni:
 	$$section = "Search";
 
-	//tags‚Ì‰ğß
+	//tagsã®è§£é‡ˆ
 	$$ret=getinistr($g_ini_abs_path,$$section,"Tags");
 	if(""!=$$ret){
 		$g_ini_tags=$$ret;
 	}
 
-	//Path[0-N]‚Ì‰ğß
+	//Path[0-N]ã®è§£é‡ˆ
 	##i=0;
 	while(##i < #g_const_ini_path_max){
 		$$ret = getinistr($g_ini_abs_path,$$section,"Path"+str(##i));
@@ -889,7 +891,7 @@ ParseIni:
 	#g_ini_path_num = ##i;
 
 
-	//Priority[0-3]‚Ì‰ğß
+	//Priority[0-3]ã®è§£é‡ˆ
 	##i=0;
 	while(##i < #g_const_ini_priority_max){
 		$$ret = getinistr($g_ini_abs_path,$$section,"Priority"+str(##i));
@@ -918,28 +920,27 @@ CheckIniPriorityString:
 		}
 		##i = ##i + 1;
 	}
-	message("iniƒtƒ@ƒCƒ‹‚Ì PriorityƒL[ ‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B\n"	+
-			"iniƒtƒ@ƒCƒ‹F"+$g_ini_abs_path + "\n"				+
-			"ŠÔˆá‚Á‚Ä‚¢‚é’lF" + $$arg + "\n"
+	message("iniãƒ•ã‚¡ã‚¤ãƒ«ã® Priorityã‚­ãƒ¼ ãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚\n"	+
+			"iniãƒ•ã‚¡ã‚¤ãƒ«ï¼š"+$g_ini_abs_path + "\n"				+
+			"é–“é•ã£ã¦ã„ã‚‹å€¤ï¼š" + $$arg + "\n"
 	);
 	return false;
 
 
-//‰ğÍÏ‚İ‚Ìtagsƒtƒ@ƒCƒ‹‚©‚Ç‚¤‚©’²‚×‚éB
-//–¢‰ğÍ‚Ìtagsƒtƒ@ƒCƒ‹‚È‚çAg_parsed_tags_filename ‚ÖŠi”[‚³‚ê‚éB
-//iƒƒ‚j“¯‚¶tagsƒtƒ@ƒCƒ‹‚ğ‰½“x‚à‰ğÍ‚µ‚È‚¢‚æ‚¤‚É‚·‚éB
+//è§£ææ¸ˆã¿ã®tagsãƒ•ã‚¡ã‚¤ãƒ«ã‹ã©ã†ã‹èª¿ã¹ã‚‹ã€‚
+//æœªè§£æã®tagsãƒ•ã‚¡ã‚¤ãƒ«ãªã‚‰ã€g_parsed_tags_filename ã¸æ ¼ç´ã•ã‚Œã‚‹ã€‚
+//ï¼ˆãƒ¡ãƒ¢ï¼‰åŒã˜tagsãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½•åº¦ã‚‚è§£æã—ãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
 CheckStoreParsedTagsFile:
+debuginfo "CheckStoreParsedTagsFile";
 	$$file_name = $$1;
-
-	//ƒtƒ@ƒCƒ‹ƒpƒX‚ğ³‹K‰»‚·‚é
-	#g_fso=createobject("Scripting.FileSystemObject");
-	$$file_name = callmethod_returnstr(#g_fso,"GetAbsolutePathName",$$file_name);
-	releaseobject #g_fso;
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’æ­£è¦åŒ–ã™ã‚‹
+	call GetAbsolutePathName $$file_name;
+	$$file_name = $$return;
 
 	##i=0;
 	while(##i<#g_parsed_tags_filename_num){
 		if($$file_name == $g_parsed_tags_filename[##i]){
-			//‰ğÍÏ‚İ‚Ìtagsƒtƒ@ƒCƒ‹
+			//è§£ææ¸ˆã¿ã®tagsãƒ•ã‚¡ã‚¤ãƒ«
 			return true;
 		}
 		##i = ##i + 1;
@@ -949,83 +950,83 @@ CheckStoreParsedTagsFile:
 	return false;
 
 
-//$g_parsed_tags_filename[] ‚Ì’†g‚ğ•\¦‚·‚éBiƒfƒoƒbƒOj
+//$g_parsed_tags_filename[] ã®ä¸­èº«ã‚’è¡¨ç¤ºã™ã‚‹ã€‚ï¼ˆãƒ‡ãƒãƒƒã‚°ï¼‰
 ShowParsedTagsFilename:
 	##i=0;
-	$$msg="$g_parsed_tags_filename[]=\n";
+	debuginfo sprintf("==== Dump ==== $g_parsed_tags_filename (%d)",#g_parsed_tags_filename_num);
 	while(##i<#g_parsed_tags_filename_num){
-		$$msg = $$msg + "  –" + $g_parsed_tags_filename[##i] + "\n";
+		debuginfo sprintf("    [%d]%s", ##i, $g_parsed_tags_filename[##i]);
 		##i = ##i + 1;
 	}
-	if(0){
-		message($$msg);
-	}else{
-		debuginfo 1;
-		debuginfo($$msg);
-	}
 	return ;
 
 
-InitializeFOS:
-	if(0==#g_fso){
-		#g_fso=createobject("Scripting.FileSystemObject");
-		if(0==#g_fso){
-			message("createobject(\"Scripting.FileSystemObject\"); ‚É¸”s");
-			return false;
-		}
-	}
-	return true;
-
-
-FinalizeFOS:
-	if(#g_fso){
-		releaseobject #g_fso;
-		#g_fso=0;
-	}
-	return ;
-
-
-LoadDengakuDLL:
-	if(! #g_load_dengaku){
-		loaddll $g_dengaku_abs_path;
-		if (!result) {
-			message $g_dengaku_filename + " ‚ğƒ[ƒh‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B";
-			return false;
-		}
-		//	‚c‚k‚k‚Ìƒo[ƒWƒ‡ƒ“ƒ`ƒFƒbƒN
-		$$DLLVer = dllfuncstr("GETVERSION");
-		if (val(leftstr($$DLLVer, 1)) < 2) {
-			message "‚±‚Ìƒ}ƒNƒ‚ÌÀs‚É‚Í Ver.2.00 ˆÈ~‚Ì“cŠy‚c‚k‚k‚ª•K—v‚Å‚·B";
+LoadDLL:
+	if(#g_hmjre_dll==0){
+		#g_hmjre_dll=loaddll("HmJre.dll");
+		if(#g_hmjre_dll==0){
+			message "HmJre.dllã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸ";
 			freedll;
 			return false;
 		}
-		if (!dllfunc("BRE_LOAD", "BREGEXP.DLL")) {
-			message "BREGEXP.DLL ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ";
-    		freedll;
-    		return false;
-		}
-
-		#g_load_dengaku=true;
 	}
 	return true;
 
-FreeDengakuDLL:
-	if(#g_load_dengaku){
-		//##n=dllfunc("BRE_FREE");
-		freedll;
-		#g_load_dengaku=false;
+FreeDLL:
+	if(#g_hmjre_dll){
+		freedll #g_hmjre_dll;
+		#g_hmjre_dll=0;
 	}
 	return;
 
-//ŠÂ‹«‚ÌŒŸ¸
+//ç’°å¢ƒã®æ¤œæŸ»
 CheckEnvironment:
 	if(! existfile($g_ctag_search_abs_path)){
-		message("Àsƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB\n"			+
-				"ƒ}ƒNƒ‚ğÄƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‰º‚³‚¢B\n"	+
+		message("å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚\n"			+
+				"ãƒã‚¯ãƒ­ã‚’å†ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ä¸‹ã•ã„ã€‚\n"	+
 				$g_ctag_search_filename);
 		return false;
 	}
 
 	return true;
 
+
+/*æ–‡å­—åˆ—$$1ãŒ$$2ã§é–‹å§‹ã—ã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
+*/
+StartsWith:
+	##index=strstr($$1,$$2);
+	if(##index==0){
+		return true;
+	}
+	return false;
+
+
+/*æ–‡å­—åˆ—$$1ãŒ$$2ã§çµ‚ç«¯ã—ã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
+*/
+EndsWith:
+	##index=strrstr($$1,$$2);
+	if(##index==-1){
+		return false;
+	}
+	if(##index==(strlen($$1)-strlen($$2))){
+		return true;
+	}
+	return false;
+
+
+GetParentFolderName:
+	if(strlen($$1)<=3){
+		//(memo) 3== "c:/"
+		return "";;
+	}
+	##fso=createobject("Scripting.FileSystemObject");
+	$$parent_folder = member(##fso,"GetParentFolderName", $$1);
+	releaseobject ##fso;
+	return $$parent_folder;
+
+GetAbsolutePathName:
+	##fso=createobject("Scripting.FileSystemObject");
+	$$abs_filename = member(##fso,"GetAbsolutePathName",$$1);
+	releaseobject ##fso;
+	return $$abs_filename;
 
