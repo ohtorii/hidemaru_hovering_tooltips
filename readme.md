@@ -41,8 +41,10 @@ masterブランチを取得しても多分動作しないです。（動作確�
     hidemaru_macrodir
       └─hidemaru_hovering_tooltips
          ├─hidemaru_hovering_tooltips.mac
+         ├─readme.md
          ├─internal
-         └─images
+         ├─images
+         └─project
 
 ## ショートカットキー割り当て
 
