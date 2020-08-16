@@ -4,11 +4,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 //		exe/dll/ini のパス設定
 ////////////////////////////////////////////////////////////////////////////////
-$g_ctag_search_filename = "ctags_search.exe";
-$g_ctag_search_abs_path = currentmacrodirectory + "\\" + $g_ctag_search_filename;
+$g_ctag_search_filename_x86 = "ctags_search_x86.exe";
+$g_ctag_search_abs_path_x86 = currentmacrodirectory + "\\" + $g_ctag_search_filename_x86;
 
-$g_ini_filename 	= "config.ini";
-$g_ini_abs_path 	= currentmacrodirectory + "\\" + $g_ini_filename;
+$g_ctag_search_filename_x64 = "ctags_search_x64.exe";
+$g_ctag_search_abs_path_x64 = currentmacrodirectory + "\\" + $g_ctag_search_filename_x64;
+
+$g_ini_abs_path 	= currentmacrodirectory + "\\config.ini";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -957,13 +959,14 @@ FreeDLL:
 
 //環境の検査
 CheckEnvironment:
-	if(! existfile($g_ctag_search_abs_path)){
-		message("実行ファイルが見つかりません。\n"			+
-				"マクロを再インストールして下さい。\n"	+
-				$g_ctag_search_filename);
+	if(! existfile($g_ctag_search_abs_path_x86)){
+		message("実行ファイルが見つかりません。\n見つからないファイル=" + $g_ctag_search_filename_x86);
 		return false;
 	}
-
+	if(! existfile($g_ctag_search_abs_path_x64)){
+		message("実行ファイルが見つかりません。\n見つからないファイル=" + $g_ctag_search_filename_x64);
+		return false;
+	}
 	return true;
 
 
