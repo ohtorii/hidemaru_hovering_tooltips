@@ -4,13 +4,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 //		exe/dll/ini のパス設定
 ////////////////////////////////////////////////////////////////////////////////
-$g_ctag_search_filename_x86 = "ctags_search_x86.exe";
-$g_ctag_search_abs_path_x86 = currentmacrodirectory + "\\" + $g_ctag_search_filename_x86;
-
-$g_ctag_search_filename_x64 = "ctags_search_x64.exe";
-$g_ctag_search_abs_path_x64 = currentmacrodirectory + "\\" + $g_ctag_search_filename_x64;
-
-$g_ini_abs_path 	= currentmacrodirectory + "\\config.ini";
+$g_ctag_search_abs_path_x86 = currentmacrodirectory + "\\ctags_search_x86.exe";
+$g_ctag_search_abs_path_x64 = currentmacrodirectory + "\\ctags_search_x64.exe";
+$g_ini_abs_path 			= currentmacrodirectory + "\\config.ini";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -266,7 +262,10 @@ GetSearchText:
 RunCtagsSearch:
 	$$tags_abs_filename=$$1;
 	$$text= $$2;
-	$$exe = "\"" + $g_ctag_search_abs_path + "\"";
+
+	call GetExeFileName;
+	$$exe = "\"" + $$return + "\"";
+
 	$$tag = "\"" + $$tags_abs_filename + "\"";
 	$$cmd = $$exe + " " + $$text + " " + $$tag;
 	runex $$cmd
@@ -286,10 +285,18 @@ RunCtagsSearch:
 	}
 	##retex = getresultex(9);
 	if(0 != ##retex){
-		message($g_ctag_search_filename + "  のコマンドラインへの返値が失敗でした。\n");
+		message("コマンドラインへの返値が失敗でした。");
 		return false;
 	}
 	return true;
+
+
+GetExeFileName:
+	if(platform&0x00080000){
+		//64bit版
+		return $g_ctag_search_abs_path_x64;
+	}
+	return $g_ctag_search_abs_path_x86;
 
 
 /*tagsファイルから正規表現を抜き出す
